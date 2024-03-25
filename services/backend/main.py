@@ -8,11 +8,11 @@ from database.settings import engine, SessionLocal
 from database import models
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-# import jwthandler
 from auth import jwthandler
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
+from routes import users
 
 app = FastAPI()
 
@@ -26,17 +26,5 @@ app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
-db_dependency = Annotated[Session, Depends(get_db)]
-
-@app.get('/')
-def home():
-    return {'data': 'Hello, stranger'}
-
-
+app.include_router(users.router)
