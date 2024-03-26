@@ -11,10 +11,11 @@ class UserRegSchema(BaseModel):
 
 
 class UserInSchema(BaseModel):
+    id_user: int
     username: str
     password: str
 
 
 class UserOutSchema(BaseModel):
-    id: int
+    id_user: int
     username: str

@@ -21,6 +21,7 @@ class Tasks(Base):
     start_date = Column(DateTime)
     end_date = Column(DateTime)
     status = Column(Boolean, default=False)
+    rank = Column(String, default="")
     category = Column(String, default="")
     id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"), default=None)
     id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"))

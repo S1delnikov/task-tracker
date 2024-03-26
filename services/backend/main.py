@@ -12,7 +12,7 @@ from auth import jwthandler
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
-from routes import users
+from routes import users, tasks
 
 app = FastAPI()
 
@@ -28,3 +28,4 @@ models.Base.metadata.create_all(bind=engine)
 
 
 app.include_router(users.router)
+app.include_router(tasks.router)
