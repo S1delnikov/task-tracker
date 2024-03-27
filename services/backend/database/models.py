@@ -10,6 +10,7 @@ class Users(Base):
     username = Column(String, index=True, unique=True)
     email = Column(String, default="")
     password = Column(String)
+    disabled = Column(String, default=False)
     date_of_registration = Column(DateTime)
 
 # Таблица друзей пользователя
