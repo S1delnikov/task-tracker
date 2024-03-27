@@ -1,9 +1,16 @@
+"""
+
+    Данный модуль содержит в себе описания таблиц, 
+    которые будут созданы при первом подключении к базе данных
+
+"""
+
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from .settings import Base
 
 
-# Таблица пользователей
 class Users(Base):
+    """Таблица пользователей"""
     __tablename__ = 'users'
 
     id_user = Column(Integer, primary_key=True, index=True)
@@ -13,16 +20,18 @@ class Users(Base):
     disabled = Column(String, default=False)
     date_of_registration = Column(DateTime)
 
-# Таблица друзей пользователя
+
 class Friends(Base):
+    """Таблица друзей пользователя"""
     __tablename__ = 'friends'
 
     id_sender = Column(Integer, ForeignKey('users.id_user', ondelete="CASCADE"), primary_key=True)
     id_recipient = Column(Integer, ForeignKey('users.id_user', ondelete="CASCADE"), primary_key=True)
     relation_type = Column(String, default="")
 
-# Таблица задач
+
 class Tasks(Base):
+    """Таблица задач"""
     __tablename__ = 'tasks'
 
     id_task = Column(Integer, primary_key=True, index=True)
@@ -36,8 +45,9 @@ class Tasks(Base):
     id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"), default=None)
     id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"))
 
-# Таблица подзадач
+
 class Subtasks(Base):
+    """Таблица подзадач"""
     __tablename__ = 'subtasks'
 
     id_subtask = Column(Integer, primary_key=True, index=True)
@@ -46,24 +56,27 @@ class Subtasks(Base):
     done = Column(Boolean, default=False)
     id_task = Column(Integer, ForeignKey("tasks.id_task", ondelete="CASCADE"))
 
-# Таблица проектов
+
 class Projects(Base):
+    """Таблица проектов"""
     __tablename__ = 'projects'
 
     id_project = Column(Integer, primary_key=True, index=True)
     name = Column(String, default="")
     description = Column(String, default="")
 
-# Таблица-посредник между пользователями и проектами
+
 class ProjectsUsers(Base):
+    """Таблица-посредник между пользователями и проектами"""
     __tablename__ = 'projects_users'
 
     id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"), primary_key=True)
     id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"), primary_key=True)
     role = Column(String, default="owner")
 
-# Таблица сообщений пользователей
+
 class Messages(Base):
+    """Таблица сообщений пользователей"""
     __tablename__ = 'messages'
 
     id_message = Column(Integer, primary_key=True, index=True)
@@ -72,8 +85,9 @@ class Messages(Base):
     id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"))
     id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"))
 
-# Таблица с содержимым сообщений пользователя
+
 class Contents(Base):
+    """Таблица с содержимым сообщений пользователя"""
     __tablename__ = 'contents'
 
     id_content = Column(Integer, primary_key=True, index=True)
