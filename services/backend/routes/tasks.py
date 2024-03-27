@@ -16,3 +16,22 @@ async def create_task_solo(
     db: db_dependency
 ):
     return await crud_solo.create_task(data=data, id_user=current_user.id_user, db=db)
+
+
+@router.post('/update_task_solo/{id_task}')
+async def update_task_solo(
+    id_task,
+    data: TaskSolo,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_solo.update_task(data=data, id_task=id_task, id_user=current_user.id_user, db=db)
+
+
+@router.post('/delete_task_solo/{id_task}')
+async def delete_task_solo(
+    id_task,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_solo.delete_task(id_task=id_task, id_user=current_user.id_user, db=db)
