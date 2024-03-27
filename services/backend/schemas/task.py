@@ -7,15 +7,15 @@ class TaskSolo(BaseModel):
     description: str
     start_date: datetime
     end_date: datetime
-    status: bool
-    rank: str
+    done: bool = False
+    # rank: str
 
 class TaskProj(BaseModel):
     title: str
     description: str
     start_date: datetime
     end_date: datetime
-    status: bool
+    done: bool = False
     rank: str
     category: str
     id_project: int

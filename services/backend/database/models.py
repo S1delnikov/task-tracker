@@ -1,6 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from .settings import Base
 
+
 # Таблица пользователей
 class Users(Base):
     __tablename__ = 'users'
@@ -11,6 +12,14 @@ class Users(Base):
     password = Column(String)
     date_of_registration = Column(DateTime)
 
+# Таблица друзей пользователя
+class Friends(Base):
+    __tablename__ = 'friends'
+
+    id_sender = Column(Integer, ForeignKey('users.id_user', ondelete="CASCADE"), primary_key=True)
+    id_recipient = Column(Integer, ForeignKey('users.id_user', ondelete="CASCADE"), primary_key=True)
+    relation_type = Column(String, default="")
+
 # Таблица задач
 class Tasks(Base):
     __tablename__ = 'tasks'
@@ -20,7 +29,7 @@ class Tasks(Base):
     description = Column(String, default="")
     start_date = Column(DateTime)
     end_date = Column(DateTime)
-    status = Column(Boolean, default=False)
+    done = Column(Boolean, default=False)
     rank = Column(String, default="")
     category = Column(String, default="")
     id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"), default=None)
@@ -33,7 +42,7 @@ class Subtasks(Base):
     id_subtask = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
     description = Column(String, default="")
-    status = Column(Boolean, default=False)
+    done = Column(Boolean, default=False)
     id_task = Column(Integer, ForeignKey("tasks.id_task", ondelete="CASCADE"))
 
 # Таблица проектов

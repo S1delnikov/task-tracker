@@ -18,8 +18,8 @@ async def create_task(
         description=data.description,
         start_date=data.start_date,
         end_date=data.end_date,
-        status=data.status,
-        rank=data.rank,
+        done=data.done,
+        # rank=data.rank,
         id_user=id_user
     )
     db.add(task)
