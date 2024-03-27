@@ -4,13 +4,13 @@ from database.connection import db_dependency
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserInSchema
-from schemas.task import TaskSolo, TaskProj
+from schemas.task import TaskSoloSchema, TaskProjSchema
 from schemas.token import Token
 from database.models import Users, Tasks
 
 
 async def create_task(
-        data: TaskSolo, 
+        data: TaskSoloSchema, 
         id_user: int, 
         db: db_dependency
 ):
@@ -32,7 +32,7 @@ async def create_task(
 
 
 async def update_task(
-        data: TaskSolo,
+        data: TaskSoloSchema,
         id_task: int,
         id_user: int,
         db: db_dependency

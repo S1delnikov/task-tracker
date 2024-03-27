@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class TaskSolo(BaseModel):
+class TaskSoloSchema(BaseModel):
     title: str
     description: str
     start_date: datetime
@@ -11,7 +11,7 @@ class TaskSolo(BaseModel):
     # rank: str
 
 
-class TaskProj(BaseModel):
+class TaskProjSchema(BaseModel):
     title: str
     description: str
     start_date: datetime
