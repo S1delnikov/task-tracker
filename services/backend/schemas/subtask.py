@@ -1,8 +1,7 @@
 from pydantic import BaseModel
 
 
-class SubtaskSchema(BaseModel):
+class SubtaskCreateSchema(BaseModel):
     title: str
     description: str
     done: bool = False
-    id_task: int
