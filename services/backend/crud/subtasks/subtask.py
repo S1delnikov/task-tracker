@@ -1,10 +1,12 @@
 from fastapi import HTTPException, status
-from schemas.subtask import SubtaskSchema
+from schemas.subtask import SubtaskCreateSchema
 from database.models import Tasks, Subtasks
 from database.connection import db_dependency
 
 
-async def create_subtask(data: SubtaskSchema, id_task: int, db: db_dependency):
+async def create_subtask(data: SubtaskCreateSchema, id_task: int, db: db_dependency):
+    """Метод создания подзадачи. Работает для одиночных задач и проектных задач."""
+
     task = db.query(Tasks).filter(Tasks.id_task==id_task).first()
     if not task:
         raise HTTPException(
@@ -16,7 +18,7 @@ async def create_subtask(data: SubtaskSchema, id_task: int, db: db_dependency):
         title = data.title,
         description = data.description,
         done = data.done,
-        id_task = data.id_task
+        id_task = id_task
     )
     db.add(subtask)
     db.commit()

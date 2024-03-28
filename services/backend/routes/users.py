@@ -10,7 +10,7 @@ from schemas.token import Token
 from schemas.user import UserRegSchema
 from database.connection import db_dependency
 from database.models import Users
-import services.backend.crud.users.user as crud
+import crud.users.user as crud
 
 router = APIRouter()
 
