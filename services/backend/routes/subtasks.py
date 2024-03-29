@@ -17,3 +17,13 @@ async def create_subtask(
     db: db_dependency
 ):
     return await crud.create_subtask(data=data, id_task=id_task, db=db)
+
+
+@router.post('/update_subtask/{id_subtask}')
+async def update_subtask(
+    id_subtask,
+    data: SubtaskSchema,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud.update_subtask(data=data, id_subtask=id_subtask, id_user=current_user.id_user, db=db)
