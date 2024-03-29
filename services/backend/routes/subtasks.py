@@ -27,3 +27,12 @@ async def update_subtask(
     db: db_dependency
 ):
     return await crud.update_subtask(data=data, id_subtask=id_subtask, id_user=current_user.id_user, db=db)
+
+
+@router.post('/delete_subtask/{id_subtask}')
+async def delete_subtask(
+    id_subtask,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud.delete_subtask(id_subtask=id_subtask, id_user=current_user.id_user, db=db)
