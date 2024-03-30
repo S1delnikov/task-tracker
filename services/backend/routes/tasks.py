@@ -37,6 +37,15 @@ async def delete_task_solo(
     return await crud_solo.delete_task(id_task=id_task, id_user=current_user.id_user, db=db)
 
 
+@router.get('/get_solo_task/{id_task}')
+async def get_solo_task(
+    id_task,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_solo.get_task(id_task=id_task, id_user=current_user.id_user, db=db)
+
+
 @router.get('/get_solo_tasks')
 async def get_solo_tasks(
     current_user: Annotated[UserInSchema, Depends(get_current_user)],
