@@ -72,6 +72,8 @@ async def delete_task(
 
 
 async def get_tasks(id_user: int, db: db_dependency):
+    """Данный метод возвращает все одиночные задачи пользователя"""
+
     tasks = db.query(Tasks).filter(Tasks.id_user==id_user).all()
 
     return tasks
