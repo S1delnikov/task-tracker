@@ -72,6 +72,20 @@ async def delete_task(
     return {"message": "Task deleted successfully"}
 
 
+async def get_task(
+        id_task: int,
+        id_user: int,
+        db: db_dependency
+):
+    """Данный метод возвращает одиночную задачу пользователя"""
+
+    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
+    if not task:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Task doesn't exists.")
+    
+    return AllTaskSoloSchema.model_validate(task)
+
+
 async def get_tasks(id_user: int, db: db_dependency):
     """Данный метод возвращает все одиночные задачи пользователя"""
 
