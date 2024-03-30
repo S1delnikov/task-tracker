@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from schemas.subtask import SubtaskSchema
 from database.models import Tasks, Subtasks, Users
 from database.connection import db_dependency
+from errors.my_errors import TASK_NOT_EXIST_ERROR, SUBTASK_NOT_EXIST_ERROR
 
 
 async def create_subtask(data: SubtaskSchema, id_task: int, db: db_dependency):
@@ -9,10 +10,7 @@ async def create_subtask(data: SubtaskSchema, id_task: int, db: db_dependency):
 
     task = db.query(Tasks).filter(Tasks.id_task==id_task).first()
     if not task:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, 
-            detail="Task doesn't exists."    
-        )
+        raise TASK_NOT_EXIST_ERROR
     del task
     subtask = Subtasks (
         title = data.title,
@@ -46,10 +44,7 @@ async def update_subtask(data: SubtaskSchema, id_subtask: int, id_user, db: db_d
         .first()
     
     if not subtask:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, 
-            detail="Subtask doesn't exists."    
-        )
+        raise SUBTASK_NOT_EXIST_ERROR
     
     subtask.title = data.title
     subtask.description = data.description
@@ -70,10 +65,7 @@ async def delete_subtask(id_subtask, id_user: int, db: db_dependency):
         .first()
     
     if not subtask:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Subtask doesn't exists."
-        )
+        raise SUBTASK_NOT_EXIST_ERROR
     
     db.delete(subtask)
     db.commit()

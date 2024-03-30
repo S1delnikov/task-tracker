@@ -6,6 +6,7 @@ from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserRegSchema, UserOutSchema
 from schemas.token import Token
 from database.models import Users
+from errors.my_errors import USERNAME_IS_OCCUPIED_ERROR, INCORRECT_UN_OR_PSWD_ERROR
 
 
 async def create_user(data: UserRegSchema, db: db_dependency):
@@ -20,18 +21,14 @@ async def create_user(data: UserRegSchema, db: db_dependency):
         db.commit()
         db.refresh(new_user)
     except: 
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This username is occupied by another person")
+        raise USERNAME_IS_OCCUPIED_ERROR
     return UserOutSchema(id_user=new_user.id_user, username=new_user.username)
 
 
 async def login(username, password: str, db: db_dependency):
     user = authenticate_user(username=username, password=password, db=db)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise INCORRECT_UN_OR_PSWD_ERROR
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={ "sub": user.username }, expires_delta=access_token_expires

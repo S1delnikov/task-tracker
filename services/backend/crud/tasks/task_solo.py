@@ -8,6 +8,7 @@ from schemas.user import UserInSchema
 from schemas.task import TaskSoloSchema, AllTaskSoloSchema, TaskProjSchema
 from schemas.token import Token
 from database.models import Users, Tasks
+from errors.my_errors import TASK_NOT_EXIST_ERROR
 
 
 async def create_task(
@@ -42,7 +43,7 @@ async def update_task(
 
     task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
     if not task:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Task doesn't exists.")
+        raise TASK_NOT_EXIST_ERROR
     
     task.title = data.title
     task.description = data.description
@@ -64,7 +65,7 @@ async def delete_task(
 
     task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
     if not task:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Task doesn't exists.")
+        raise TASK_NOT_EXIST_ERROR
     
     db.delete(task)
     db.commit()
@@ -81,7 +82,7 @@ async def get_task(
 
     task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
     if not task:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Task doesn't exists.")
+        raise TASK_NOT_EXIST_ERROR
     
     return AllTaskSoloSchema.model_validate(task)
 
