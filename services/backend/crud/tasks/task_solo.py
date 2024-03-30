@@ -71,4 +71,7 @@ async def delete_task(
     return {"message": "Task deleted successfully"}
 
 
+async def get_tasks(id_user: int, db: db_dependency):
+    tasks = db.query(Tasks).filter(Tasks.id_user==id_user).all()
 
+    return tasks
