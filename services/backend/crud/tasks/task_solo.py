@@ -1,10 +1,11 @@
+from typing import List
 from fastapi import HTTPException, status
 from datetime import timedelta
 from database.connection import db_dependency
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserInSchema
-from schemas.task import TaskSoloSchema, TaskProjSchema
+from schemas.task import TaskSoloSchema, AllTaskSoloSchema, TaskProjSchema
 from schemas.token import Token
 from database.models import Users, Tasks
 
@@ -75,5 +76,5 @@ async def get_tasks(id_user: int, db: db_dependency):
     """Данный метод возвращает все одиночные задачи пользователя"""
 
     tasks = db.query(Tasks).filter(Tasks.id_user==id_user).all()
-
+    tasks = [AllTaskSoloSchema.model_validate(task) for task in tasks]
     return tasks
