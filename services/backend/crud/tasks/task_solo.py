@@ -6,8 +6,9 @@ from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserInSchema
 from schemas.task import TaskSoloInSchema, TaskSoloOutSchema, TaskProjInSchema
+from schemas.subtask import SubtaskOutSchema
 from schemas.token import Token
-from database.models import Users, Tasks
+from database.models import Users, Tasks, Subtasks
 from errors.my_errors import TASK_NOT_EXIST_ERROR
 
 
@@ -92,4 +93,8 @@ async def get_tasks(id_user: int, db: db_dependency):
 
     tasks = db.query(Tasks).filter(Tasks.id_user==id_user).all()
     tasks = [TaskSoloOutSchema.model_validate(task) for task in tasks]
+    for task in tasks:
+        subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
+        subtasks = [SubtaskOutSchema.model_validate(subtask) for subtask in subtasks]
+        task.subtasks = subtasks
     return tasks
