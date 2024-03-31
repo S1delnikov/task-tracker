@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class TaskSoloSchema(BaseModel):
+class TaskSoloInSchema(BaseModel):
     title: str
     description: str
     start_date: datetime
