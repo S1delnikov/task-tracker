@@ -25,7 +25,7 @@ class TaskSoloOutSchema(BaseModel):
         from_attributes = True
 
 
-class TaskProjSchema(BaseModel):
+class TaskProjInSchema(BaseModel):
     title: str
     description: str
     start_date: datetime
