@@ -5,7 +5,7 @@ from database.connection import db_dependency
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserInSchema
-from schemas.task import TaskSoloInSchema, AllTaskSoloSchema, TaskProjSchema
+from schemas.task import TaskSoloInSchema, TaskSoloOutSchema, TaskProjSchema
 from schemas.token import Token
 from database.models import Users, Tasks
 from errors.my_errors import TASK_NOT_EXIST_ERROR
@@ -84,12 +84,12 @@ async def get_task(
     if not task:
         raise TASK_NOT_EXIST_ERROR
     
-    return AllTaskSoloSchema.model_validate(task)
+    return TaskSoloOutSchema.model_validate(task)
 
 
 async def get_tasks(id_user: int, db: db_dependency):
     """Данный метод возвращает все одиночные задачи пользователя"""
 
     tasks = db.query(Tasks).filter(Tasks.id_user==id_user).all()
-    tasks = [AllTaskSoloSchema.model_validate(task) for task in tasks]
+    tasks = [TaskSoloOutSchema.model_validate(task) for task in tasks]
     return tasks

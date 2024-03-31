@@ -13,7 +13,7 @@ class TaskSoloInSchema(BaseModel):
         from_attributes = True
 
 
-class AllTaskSoloSchema(BaseModel):
+class TaskSoloOutSchema(BaseModel):
     id_task: int
     title: str
     description: str
