@@ -3,7 +3,7 @@ from typing import Annotated
 from auth.jwthandler import get_current_user
 from database.connection import db_dependency
 from schemas.user import UserInSchema
-from schemas.task import TaskSoloInSchema, TaskProjSchema
+from schemas.task import TaskSoloInSchema, TaskProjInSchema
 import crud.tasks.task_solo as crud_solo
 # import crud.tasks.task_proj as crud_proj
 

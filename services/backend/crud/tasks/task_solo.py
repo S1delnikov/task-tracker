@@ -5,7 +5,7 @@ from database.connection import db_dependency
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserInSchema
-from schemas.task import TaskSoloInSchema, TaskSoloOutSchema, TaskProjSchema
+from schemas.task import TaskSoloInSchema, TaskSoloOutSchema, TaskProjInSchema
 from schemas.token import Token
 from database.models import Users, Tasks
 from errors.my_errors import TASK_NOT_EXIST_ERROR

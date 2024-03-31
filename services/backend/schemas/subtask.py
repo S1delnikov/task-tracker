@@ -7,3 +7,8 @@ class SubtaskSchema(BaseModel):
     done: bool = False
 
 
+class SubtaskOutSchema(BaseModel):
+    id_subtask: int
+    title: str
+    description: str
+    done: bool = False
