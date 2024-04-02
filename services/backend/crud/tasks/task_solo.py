@@ -85,7 +85,12 @@ async def get_task(
     if not task:
         raise TASK_NOT_EXIST_ERROR
     
-    return TaskSoloOutSchema.model_validate(task)
+    task = TaskSoloOutSchema.model_validate(task)
+    subtasks = db.query(Subtasks).filter(Subtasks.id_task==id_task).all()
+    subtasks = [SubtaskOutSchema.model_validate(subtask) for subtask in subtasks]
+    task.subtasks = subtasks
+    
+    return task
 
 
 async def get_tasks(id_user: int, db: db_dependency):
