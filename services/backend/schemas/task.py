@@ -35,8 +35,6 @@ class TaskProjInSchema(BaseModel):
     done: bool = False
     rank: str = ""
     category: str = "Надо сделать"
-    id_project: int
-    id_user: int
 
     class Config:
         from_attributes = True
