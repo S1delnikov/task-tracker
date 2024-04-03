@@ -5,7 +5,7 @@ from database.connection import db_dependency
 from schemas.user import UserInSchema
 from schemas.task import TaskSoloInSchema, TaskProjInSchema
 import crud.tasks.task_solo as crud_solo
-# import crud.tasks.task_proj as crud_proj
+import crud.tasks.task_proj as crud_proj
 
 router = APIRouter()
 
@@ -52,3 +52,13 @@ async def get_solo_tasks(
     db: db_dependency
 ):
     return await crud_solo.get_tasks(id_user=current_user.id_user, db=db)
+
+
+@router.post('/create_task_proj/{id_project}')
+async def create_task_proj(
+    id_project,
+    data: TaskProjInSchema,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.create_task(data=data, id_project=id_project, id_user=current_user.id_user, db=db)
