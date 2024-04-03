@@ -81,7 +81,7 @@ async def get_task(
 ):
     """Данный метод возвращает одиночную задачу пользователя"""
 
-    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
+    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user, Tasks.id_project==None).first()
     if not task:
         raise TASK_NOT_EXIST_ERROR
     
@@ -96,7 +96,7 @@ async def get_task(
 async def get_tasks(id_user: int, db: db_dependency):
     """Данный метод возвращает все одиночные задачи пользователя"""
 
-    tasks = db.query(Tasks).filter(Tasks.id_user==id_user).all()
+    tasks = db.query(Tasks).filter(Tasks.id_user==id_user, Tasks.id_project==None).all()
     tasks = [TaskSoloOutSchema.model_validate(task) for task in tasks]
     for task in tasks:
         subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
