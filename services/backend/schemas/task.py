@@ -33,8 +33,24 @@ class TaskProjInSchema(BaseModel):
     start_date: datetime
     end_date: datetime
     done: bool = False
-    rank: str
-    category: str
+    rank: str = ""
+    category: str = "Надо сделать"
+    id_project: int
+    id_user: int
+
+    class Config:
+        from_attributes = True
+
+
+class TaskProjOutSchema(BaseModel):
+    id_task: int
+    title: str
+    description: str
+    start_date: datetime
+    end_date: datetime
+    done: bool = False
+    rank: str = ""
+    category: str = "Надо сделать"
     id_project: int
     id_user: int
 
