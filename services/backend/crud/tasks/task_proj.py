@@ -1,6 +1,7 @@
 from database.connection import db_dependency
 from schemas.task import TaskProjInSchema, TaskProjOutSchema
-from database.models import Projects, ProjectsUsers, Tasks
+from schemas.subtask import SubtaskOutSchema
+from database.models import Projects, ProjectsUsers, Tasks, Subtasks
 from errors.my_errors import PROJECT_NOT_EXIST_ERROR, PERMISSION_DENIED_ERROR, TASK_NOT_EXIST_ERROR
 
 
@@ -109,6 +110,20 @@ async def get_task(
 
 
 async def get_tasks(
-        
+        id_project: int,
+        id_user: int,
+        db: db_dependency
 ):
-    ...
+    project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
+    if not project:
+        raise PROJECT_NOT_EXIST_ERROR
+    del project
+
+    tasks = db.query(Tasks).filter(Tasks.id_user==id_user, Tasks.id_project==id_project).all()
+    tasks = [TaskProjOutSchema.model_validate(task) for task in tasks]
+    for task in tasks:
+        subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
+        subtasks = [SubtaskOutSchema.model_validate(subtask) for subtask in subtasks]
+        task.subtasks = subtasks
+    
+    return tasks
