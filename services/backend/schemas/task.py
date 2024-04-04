@@ -51,6 +51,7 @@ class TaskProjOutSchema(BaseModel):
     category: str = "Надо сделать"
     id_project: int
     id_user: int
+    subtasks: List[SubtaskOutSchema] = None
 
     class Config:
         from_attributes = True
