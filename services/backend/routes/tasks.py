@@ -83,3 +83,13 @@ async def delete_task_proj(
     db: db_dependency
 ):
     return await crud_proj.delete_task(id_project=id_project, id_task=id_task, id_user=current_user.id_user, db=db)
+
+
+@router.get('/get_proj_task/{id_project}/{id_task}')
+async def get_proj_task(
+    id_project,
+    id_task,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.get_task(id_project=id_project, id_task=id_task, id_user=current_user.id_user, db=db)
