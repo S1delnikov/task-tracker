@@ -91,9 +91,21 @@ async def delete_task(
 
 
 async def get_task(
-        
+        id_project: int,
+        id_task: int,
+        id_user: int,
+        db: db_dependency
 ):
-    ...
+    project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
+    if not project:
+        raise PROJECT_NOT_EXIST_ERROR
+    del project
+
+    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_project==id_project, Tasks.id_user==id_user).first()
+    if not task:
+        raise TASK_NOT_EXIST_ERROR
+    
+    return TaskProjOutSchema.model_validate(task)
 
 
 async def get_tasks(
