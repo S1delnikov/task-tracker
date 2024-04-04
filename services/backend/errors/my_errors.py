@@ -7,3 +7,4 @@ TASK_NOT_EXIST_ERROR = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, de
 SUBTASK_NOT_EXIST_ERROR = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Subtask doesn't exist.")
 
 PROJECT_NOT_EXIST_ERROR = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Project doesn't exist.")
+PERMISSION_DENIED_ERROR = HTTPException(status_code=status.HTTP_405_METHOD_NOT_ALLOWED, detail="Permission denied.")
