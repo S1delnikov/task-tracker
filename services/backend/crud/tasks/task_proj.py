@@ -105,8 +105,12 @@ async def get_task(
     task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_project==id_project, Tasks.id_user==id_user).first()
     if not task:
         raise TASK_NOT_EXIST_ERROR
-    
-    return TaskProjOutSchema.model_validate(task)
+    task = TaskProjOutSchema.model_validate(task)
+    subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
+    subtasks = [SubtaskOutSchema.model_validate(subtask) for subtask in subtasks]
+    task.subtasks = subtasks
+
+    return task
 
 
 async def get_tasks(
