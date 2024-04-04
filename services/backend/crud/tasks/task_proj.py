@@ -67,9 +67,27 @@ async def update_task(
 
 
 async def delete_task(
-        
+        id_project: int,
+        id_task: int,
+        id_user: int,
+        db: db_dependency
 ):
-    ...
+    project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
+    if not project:
+        raise PROJECT_NOT_EXIST_ERROR
+    if project.role != "owner" and project.role != "editor":
+        raise PERMISSION_DENIED_ERROR
+    del project
+
+
+    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
+    if not task or task.id_project == None:
+        raise TASK_NOT_EXIST_ERROR
+    
+    db.delete(task)
+    db.commit()
+
+    return {"message": "Task deleted successfully"}
 
 
 async def get_task(
