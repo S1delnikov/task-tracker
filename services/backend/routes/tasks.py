@@ -62,3 +62,13 @@ async def create_task_proj(
     db: db_dependency
 ):
     return await crud_proj.create_task(data=data, id_project=id_project, id_user=current_user.id_user, db=db)
+
+@router.put('/update_task_proj/{id_project}/{id_task}')
+async def update_task_proj(
+    id_project,
+    id_task,
+    data: TaskProjInSchema,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.update_task(data=data, id_project=id_project, id_task=id_task, id_user=current_user.id_user, db=db)
