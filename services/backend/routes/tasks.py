@@ -63,6 +63,7 @@ async def create_task_proj(
 ):
     return await crud_proj.create_task(data=data, id_project=id_project, id_user=current_user.id_user, db=db)
 
+
 @router.put('/update_task_proj/{id_project}/{id_task}')
 async def update_task_proj(
     id_project,
@@ -72,3 +73,13 @@ async def update_task_proj(
     db: db_dependency
 ):
     return await crud_proj.update_task(data=data, id_project=id_project, id_task=id_task, id_user=current_user.id_user, db=db)
+
+
+@router.delete('/delete_task_proj/{id_project}/{id_task}')
+async def delete_task_proj(
+    id_project,
+    id_task,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.delete_task(id_project=id_project, id_task=id_task, id_user=current_user.id_user, db=db)
