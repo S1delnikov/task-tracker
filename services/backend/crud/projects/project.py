@@ -8,6 +8,7 @@ async def create_proj(
         id_user: int,
         db: db_dependency
 ):
+    """Метод создания проекта."""
     project = Projects(
         name = data.name,
         description = data.description

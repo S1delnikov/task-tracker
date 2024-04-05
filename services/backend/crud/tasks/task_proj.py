@@ -11,6 +11,7 @@ async  def create_task(
         id_user: int,
         db: db_dependency
 ):
+    """Метод создания проектной задачи."""
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not project:
         raise PROJECT_NOT_EXIST_ERROR
@@ -41,6 +42,7 @@ async def update_task(
         id_user: int,
         db: db_dependency
 ):
+    """Метод обновления проектной задачи."""
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not project:
         raise PROJECT_NOT_EXIST_ERROR
@@ -73,6 +75,7 @@ async def delete_task(
         id_user: int,
         db: db_dependency
 ):
+    """Метод удаления проектной задачи."""
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not project:
         raise PROJECT_NOT_EXIST_ERROR
@@ -97,6 +100,7 @@ async def get_task(
         id_user: int,
         db: db_dependency
 ):
+    """Метод получения одной проектной задачи по идентификатору."""
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not project:
         raise PROJECT_NOT_EXIST_ERROR
@@ -118,6 +122,7 @@ async def get_tasks(
         id_user: int,
         db: db_dependency
 ):
+    """Метод получения всех проектных задач из заданного проекта."""
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not project:
         raise PROJECT_NOT_EXIST_ERROR

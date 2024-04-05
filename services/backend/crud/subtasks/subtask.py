@@ -57,6 +57,7 @@ async def update_subtask(data: SubtaskSchema, id_subtask: int, id_user, db: db_d
 
 
 async def delete_subtask(id_subtask, id_user: int, db: db_dependency):
+    """Метод удаления подзадачи."""
     subtask = \
         db.query(Subtasks) \
         .join(Tasks, Tasks.id_task==Subtasks.id_task) \
