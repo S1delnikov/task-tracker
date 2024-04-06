@@ -26,3 +26,14 @@ async def update_proj(
     db: db_dependency
 ):
     return await crud_proj.update_proj(data=data, id_project=id_project, id_user=current_user.id_user, db=db)
+
+
+@router.post('/add_member/{id_project}/{id_new_user}')
+async def add_member(
+    id_project,
+    id_new_user,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency,
+    role: str = "editor"
+):
+    return await crud_proj.add_member(id_project=id_project, id_user=current_user.id_user, id_new_user=id_new_user, role=role, db=db)
