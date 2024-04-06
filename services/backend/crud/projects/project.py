@@ -63,7 +63,7 @@ async def add_member(
         db: db_dependency,
         role: str = "editor",
 ):
-    """Метод добавления стронних пользователей в проект."""
+    """Метод добавления сторонних пользователей в проект."""
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not project:
         raise PROJECT_NOT_EXIST_ERROR
@@ -87,4 +87,4 @@ async def add_member(
     except:
         return {"message": "This user is already a member of the project."}
 
-    return {"new_project_member": new_member}
+    return {"new_project_member": ProjectUserOutSchema.model_validate(new_member)}

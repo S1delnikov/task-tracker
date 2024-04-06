@@ -50,7 +50,7 @@ async def update_task(
         raise PERMISSION_DENIED_ERROR
     del project
 
-    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
+    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_project==id_project).first()
     if not task:
         raise TASK_NOT_EXIST_ERROR
     
@@ -84,7 +84,7 @@ async def delete_task(
     del project
 
 
-    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_user==id_user).first()
+    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_project==id_project).first()
     if not task or task.id_project == None:
         raise TASK_NOT_EXIST_ERROR
     
@@ -106,7 +106,7 @@ async def get_task(
         raise PROJECT_NOT_EXIST_ERROR
     del project
 
-    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_project==id_project, Tasks.id_user==id_user).first()
+    task = db.query(Tasks).filter(Tasks.id_task==id_task, Tasks.id_project==id_project).first()
     if not task:
         raise TASK_NOT_EXIST_ERROR
     task = TaskProjOutSchema.model_validate(task)
@@ -128,7 +128,7 @@ async def get_tasks(
         raise PROJECT_NOT_EXIST_ERROR
     del project
 
-    tasks = db.query(Tasks).filter(Tasks.id_user==id_user, Tasks.id_project==id_project).all()
+    tasks = db.query(Tasks).filter(Tasks.id_project==id_project).all()
     tasks = [TaskProjOutSchema.model_validate(task) for task in tasks]
     for task in tasks:
         subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
