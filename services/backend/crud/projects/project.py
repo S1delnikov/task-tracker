@@ -56,6 +56,26 @@ async def update_proj(
     return ProjectOutSchema.model_validate(project)
 
 
+async def delete_proj(
+        id_project: int,
+        id_user: int,
+        db: db_dependency
+):
+    """Метод удаления проекта."""
+    project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
+    if not project:
+        raise PROJECT_NOT_EXIST_ERROR
+    if project.role != "owner":
+        raise PERMISSION_DENIED_ERROR
+    
+    project = db.query(Projects).filter(Projects.id_project==id_project).first()
+
+    db.delete(project)
+    db.commit()
+
+    return {"message": "Project deleted successfully."}
+
+
 async def add_member(
         id_project: int,
         id_user: int,
