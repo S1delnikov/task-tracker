@@ -46,3 +46,13 @@ async def add_member(
     role: str = "editor"
 ):
     return await crud_proj.add_member(id_project=id_project, id_user=current_user.id_user, id_new_user=id_new_user, role=role, db=db)
+
+
+@router.delete('/delete_member/{id_project}/{id_member}')
+async def delete_member(
+    id_project, 
+    id_member,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.delete_member(id_project=id_project, id_user=current_user.id_user, id_member_on_delete=id_member, db=db)
