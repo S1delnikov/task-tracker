@@ -1,7 +1,13 @@
 from database.connection import db_dependency
 from schemas.project import ProjectInSchema, ProjectOutSchema, ProjectUserOutSchema
 from database.models import Projects, ProjectsUsers, Users
-from errors.my_errors import PROJECT_NOT_EXIST_ERROR, PERMISSION_DENIED_ERROR, USER_NOT_EXIST_ERROR
+from errors.my_errors import (
+    PROJECT_NOT_EXIST_ERROR, 
+    PERMISSION_DENIED_ERROR, 
+    USER_NOT_EXIST_ERROR, 
+    USER_IS_NOT_A_MEMBER,
+    SUICIDE_IS_NOT_A_WAY_OUT
+)
 
 
 async def create_proj(
@@ -108,3 +114,27 @@ async def add_member(
         return {"message": "This user is already a member of the project."}
 
     return {"new_project_member": ProjectUserOutSchema.model_validate(new_member)}
+
+
+async def delete_member(
+        id_project: int,
+        id_member_on_delete: int,
+        id_user: int,
+        db: db_dependency
+):
+    project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
+    if not project:
+        raise PROJECT_NOT_EXIST_ERROR
+    if project.role != "owner":
+        raise PERMISSION_DENIED_ERROR
+    del project
+    
+    member_on_delete = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_member_on_delete).first()
+    if not member_on_delete:
+        raise USER_IS_NOT_A_MEMBER
+    if member_on_delete.id_user == id_user:
+        raise SUICIDE_IS_NOT_A_WAY_OUT
+    db.delete(member_on_delete)
+    db.commit()
+
+    return {"deleted_member": ProjectUserOutSchema.model_validate(member_on_delete)}
