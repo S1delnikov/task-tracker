@@ -28,6 +28,15 @@ async def update_proj(
     return await crud_proj.update_proj(data=data, id_project=id_project, id_user=current_user.id_user, db=db)
 
 
+@router.delete('/delete_proj/{id_project}')
+async def delete_proj(
+    id_project,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.delete_proj(id_project=id_project, id_user=current_user.id_user, db=db)
+
+
 @router.post('/add_member/{id_project}/{id_new_user}')
 async def add_member(
     id_project,
