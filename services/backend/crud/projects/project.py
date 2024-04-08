@@ -138,3 +138,7 @@ async def delete_member(
     db.commit()
 
     return {"deleted_member": ProjectUserOutSchema.model_validate(member_on_delete)}
+
+
+async def get_members():
+    ...
