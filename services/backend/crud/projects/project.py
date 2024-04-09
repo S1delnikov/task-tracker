@@ -1,5 +1,6 @@
 from database.connection import db_dependency
 from schemas.project import ProjectInSchema, ProjectOutSchema, ProjectUserOutSchema
+from schemas.user import UserOutSchema
 from database.models import Projects, ProjectsUsers, Users
 from errors.my_errors import (
     PROJECT_NOT_EXIST_ERROR, 
@@ -140,5 +141,16 @@ async def delete_member(
     return {"deleted_member": ProjectUserOutSchema.model_validate(member_on_delete)}
 
 
-async def get_members():
-    ...
+async def get_members(
+        id_project: int,
+        db: db_dependency
+):
+    project = db.query(Projects).filter(Projects.id_project==id_project).first()
+    if not project:
+        raise PROJECT_NOT_EXIST_ERROR
+    del project
+
+    members = db.query(Users).join(ProjectsUsers, ProjectsUsers.id_user==Users.id_user).filter(ProjectsUsers.id_project==id_project).all()
+    members = [UserOutSchema.model_validate(member) for member in members]
+
+    return members
