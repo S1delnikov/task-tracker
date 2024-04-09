@@ -56,3 +56,12 @@ async def delete_member(
     db: db_dependency
 ):
     return await crud_proj.delete_member(id_project=id_project, id_user=current_user.id_user, id_member_on_delete=id_member, db=db)
+
+
+@router.get('/get_members/{id_project}')
+async def get_members(
+    id_project,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.get_members(id_project=id_project, db=db)
