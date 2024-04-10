@@ -141,6 +141,22 @@ async def delete_member(
     return {"deleted_member": ProjectUserOutSchema.model_validate(member_on_delete)}
 
 
+async def get_member(
+        id_project: int,
+        id_user: int,
+        db: db_dependency
+):
+    project = db.query(Projects).filter(Projects.id_project==id_project).first()
+    if not project:
+        raise PROJECT_NOT_EXIST_ERROR
+    del project
+    user = db.query(Users).join(ProjectsUsers, ProjectsUsers.id_user==id_user).filter(ProjectsUsers.id_project==id_project).first()
+    if not user:
+        raise USER_IS_NOT_A_MEMBER
+    
+    return UserOutSchema.model_validate(user)
+
+
 async def get_members(
         id_project: int,
         db: db_dependency
