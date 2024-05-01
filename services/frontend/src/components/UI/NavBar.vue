@@ -4,23 +4,29 @@
     <nav class="sidebar">
         <div class="user">
             <div class="user__picture">
-                <img src="@/assets/logo.png" alt="Profile picture" class="user__picture">
+                <img src="@/assets/pepe.jpeg" alt="Profile picture" class="user__picture">
             </div>
-            <div class="user__username">username_ssssssssss</div>
+            <div class="user__username">Pepe The Frog</div>
         </div>
         <div class="sidebar__btns">
             <div class="sidebar__btn">
-                <button @click="submenu" class="dropdown-btn">Задачи</button>
+                <button @click="submenu" class="dropdown-btn">
+                    <img src="@/assets/icons/tasks-icon.webp" alt="">   
+                    Задачи</button>
                     <div class="dropdown-container">
-                        <router-link to="/checklists">Чеклисты</router-link>
-                        <router-link to="/">Проекты</router-link>
+                        <router-link class="dropdown-container__links" to="/checklists">Чеклисты</router-link>
+                        <router-link class="dropdown-container__links" to="/">Проекты</router-link>
                     </div>
             </div>
             <div class="sidebar__btn">
-                <button class="route-btn" @click="$router.push('/')">Документы</button>
+                <button class="route-btn" @click="$router.push('/')">
+                    <img src="@/assets/icons/doc-icon.webp" alt="">   
+                    Документы</button>
             </div>
             <div class="sidebar__btn">
-                <button class="route-btn" @click="$router.push('/')">Чаты</button>
+                <button class="route-btn" @click="$router.push('/')">
+                    <img src="@/assets/icons/chat-icon.webp" alt="">   
+                    Чаты</button>
             </div>
         </div>
     </nav>
@@ -63,7 +69,7 @@ export default {
   border: none;
   color: #8EE4AF;
   width: 100%;
-  display: block;
+  display: block;   
 }
 
 /* Style links on mouse-over */
@@ -77,6 +83,22 @@ export default {
   .sidebar a {font-size: 18px;}
 }
 
+.dropdown-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.4rem 0.4rem 0rem 0.4rem; 
+    height: 5.8rem;
+}
+
+.route-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.4rem; 
+    height: 5.8rem;
+}
+
 .active {
   background-color: green;
   color: white;
@@ -88,28 +110,33 @@ export default {
     padding-bottom: 2rem;
 }
 
+.dropdown-container__links {
+    outline: 1px solid #05386B;
+}
+
 .sidebar__btns {
     margin-top: 8rem;
+    align-items: center;
     width: 100%;
-    height: 15rem;
+    height: 25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .sidebar__btn {
-    width: 100%;    
+    width: 90%;
+    margin-bottom: 4rem;
 }
 
 .user {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: aliceblue ;
+    /* background-color: aliceblue ; */
 }
 
 .user__picture {
-    background-color: #379683;
     width: 7.8rem;
     height: 7.8rem;
     border-radius: 50%;
@@ -118,7 +145,9 @@ export default {
 
 .user__username {
     font-size: 1.6rem;
+    padding-left: 1rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #fff;
 }
 </style>
