@@ -25,6 +25,6 @@ export default {
 }
 
 .main {
-  margin-left: 22rem;
+  margin-left: 25rem; /* 22 */
 }
 </style>
