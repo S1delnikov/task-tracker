@@ -15,7 +15,7 @@
                     Задачи</button>
                     <div class="dropdown-container">
                         <router-link class="dropdown-container__links" to="/checklists">Чеклисты</router-link>
-                        <router-link class="dropdown-container__links" to="/">Проекты</router-link>
+                        <router-link class="dropdown-container__links" to="/projects_menu">Проекты</router-link>
                     </div>
             </div>
             <div class="sidebar__btn">
