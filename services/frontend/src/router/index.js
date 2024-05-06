@@ -1,11 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Checklists from '../views/Checklists.vue'
+import ProjectsMenu from '../views/ProjectsMenu.vue'
+import ProjectView from '../views/ProjectView.vue'
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: '',
+  //   component: 
+  // },
   {
     path: '/checklists',
     name: 'Checklists',
     component: Checklists
+  },
+  {
+    path: '/projects_menu',
+    name: 'ProjectsMenu',
+    component: ProjectsMenu
+  },
+  {
+    path: '/project',
+    name: 'ProjectView',
+    component: ProjectView
   },
   // {
   //   path: '/about',

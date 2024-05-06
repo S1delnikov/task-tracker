@@ -5,7 +5,7 @@
     <router-link to="/about">About</router-link>
   </nav> -->
   <div class="main">
-    <h1>Not view</h1>
+    <!-- <h1>Not view</h1> -->
     <router-view/>
   </div>
 </template>
