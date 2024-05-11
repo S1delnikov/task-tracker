@@ -22,6 +22,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-size: 10px;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .main {

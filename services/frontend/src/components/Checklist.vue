@@ -6,120 +6,22 @@
                 <button class="control__cross-mark" type="button"><img src="@/assets/icons/cross-mark-icon.webp" alt=""></button>
             </div>
             <div class="checklist__title">
-                <input type="text" class="title" value="Task Title">
+                <input type="text" class="title" v-model="task.title" @change="updateTask(task)"></input>
             </div>
             <div class="checklist__main">
-                <div class="checklist__todo">
+                <div class="checklist__todo" v-for="subtask in task.subtasks" :key="subtask.id_subtask">
                     <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
+                        <input class="todo__real-checkbox" type="checkbox" v-model="subtask.done" @change="updateSubtask(subtask)">
                         <span class="todo__custom-checkbox"></span>
                     </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
-                </div>
-                <div class="checklist__todo">
-                    <label>
-                        <input class="todo__real-checkbox" type="checkbox" name="" id="">
-                        <span class="todo__custom-checkbox"></span>
-                    </label>
-                    <input class="todo__text" type="text" name="" id="" value="todo 1">
-                    <button class="todo__update" type="button"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
-                    <button class="todo__delete" type="button"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
+                    <input class="todo__text" type="text" v-model="subtask.description" @change="flashback">
+                    <!-- <p>{{ task }}</p> -->
+                    <button class="todo__update" type="button" @click="updateSubtask(subtask)"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
+                    <button class="todo__delete" type="button" @click="deleteSubtask(subtask)"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
                 </div>
             </div>
             <div class="checklist__add-todo">
-                <button class="add-todo" type="button">
+                <button class="add-todo" type="button" @click="testEmit">
                     <img src="@/assets/icons/plus-icon.webp" alt="Добавить">
                 </button>
             </div>
@@ -128,8 +30,27 @@
 </template>
 
 <script>
+import { mapMutations, mapActions} from 'vuex'
 export default {
-    name: 'Checklist'
+    name: 'Checklist',
+    props: {
+        task: {
+            type: Object,
+            required: true
+        }
+    },
+    methods: {
+        ...mapMutations(['setTaskTitle']),
+        ...mapActions(['updateTask', 'updateSubtask', 'deleteSubtask']),
+        testEmit() {
+            this.$emit('test', this.task)
+            // console.log(this.task)
+
+        },
+        flashback() {
+            console.log('boom')
+        }
+    }
 }
 </script>
 

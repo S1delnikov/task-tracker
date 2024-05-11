@@ -2,13 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Checklists from '../views/Checklists.vue'
 import ProjectsMenu from '../views/ProjectsMenu.vue'
 import ProjectView from '../views/ProjectView.vue'
+import UserView from '../views/UserView.vue'
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: '',
-  //   component: 
-  // },
+  {
+    path: '/',
+    name: 'UserView',
+    component: UserView 
+  },
   {
     path: '/checklists',
     name: 'Checklists',

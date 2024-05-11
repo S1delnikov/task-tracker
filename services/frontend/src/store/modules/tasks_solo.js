@@ -13,6 +13,27 @@ export default {
     mutations: {
         setTasks(state, tasks) {
             state.tasks = tasks
+        },
+        updateTask(state, task) {
+            state.tasks.forEach(t => {
+                if (t.id_task == task.id_task) {
+                    t = task
+                }
+            })
+        },
+        updateSubtask(state, stask) {
+            state.tasks.forEach(task => {
+                task.subtasks.forEach(subtask => {
+                    if (subtask.id_subtask == stask.id_subtask) {
+                        subtask = stask
+                    }
+                })
+            })
+        },
+        deleteSubtask(state, stask) {
+            state.tasks.forEach(task => {
+                task.subtasks = task.subtasks.filter(subtask => subtask.id_subtask != stask.id_subtask)
+            })
         }
     },
     actions: {
@@ -31,6 +52,18 @@ export default {
                 router.push('/')
             }
         },
+        async updateTask(ctx, task) {
+            try {
+                await axios.put(`/update_task_solo/${task.id_task}/`, task, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                ctx.commit('updateTask', task)
+            } catch(e) {
+                alert('Такой подзадачи не существует.')
+            }
+        },
         async updateSubtask(ctx, subtask) {
             try {
                 await axios.put(`/update_subtask/${subtask.id_subtask}/`, subtask, {
@@ -38,6 +71,19 @@ export default {
                         Authorization: 'Bearer ' + localStorage.getItem('token')
                     }
                 })
+                ctx.commit('updateSubtask', subtask)
+            } catch(e) {
+                alert('Такой подзадачи не существует.')
+            }
+        },
+        async deleteSubtask(ctx, subtask) {
+            try {
+                await axios.delete(`/delete_subtask/${subtask.id_subtask}/`, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                ctx.commit('deleteSubtask', subtask)
             } catch(e) {
                 alert('Такой подзадачи не существует.')
             }
