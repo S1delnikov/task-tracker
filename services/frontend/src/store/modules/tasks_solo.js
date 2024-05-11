@@ -21,6 +21,9 @@ export default {
                 }
             })
         },
+        deleteTask(state, task) {
+            state.tasks = state.tasks.filter(t => t.id_task != task.id_task)
+        },
         updateSubtask(state, stask) {
             state.tasks.forEach(task => {
                 task.subtasks.forEach(subtask => {
@@ -61,7 +64,19 @@ export default {
                 })
                 ctx.commit('updateTask', task)
             } catch(e) {
-                alert('Такой подзадачи не существует.')
+                alert('Такой задачи не существует.')
+            }
+        },
+        async deleteTask(ctx, task) {
+            try{
+                await axios.delete(`/delete_task_solo/${task.id_task}/`, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+                })
+                ctx.commit('deleteTask', task)
+            } catch(e) {
+                alert('Такой задачи не существует.')
             }
         },
         async updateSubtask(ctx, subtask) {

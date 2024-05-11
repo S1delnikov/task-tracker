@@ -3,7 +3,7 @@
         <div class="checklist__body">
             <div class="checklist__control">
                 <button class="control__edit" type="button"><img src="@/assets/icons/edit-icon.webp" alt="Edit"></button>
-                <button class="control__cross-mark" type="button"><img src="@/assets/icons/cross-mark-icon.webp" alt=""></button>
+                <button class="control__cross-mark" type="button" @click="deleteTask(task)"><img src="@/assets/icons/cross-mark-icon.webp" alt=""></button>
             </div>
             <div class="checklist__title">
                 <input type="text" class="title" v-model="task.title" @change="updateTask(task)"></input>
@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         ...mapMutations(['setTaskTitle']),
-        ...mapActions(['updateTask', 'updateSubtask', 'deleteSubtask']),
+        ...mapActions(['updateTask', 'deleteTask', 'updateSubtask', 'deleteSubtask']),
         testEmit() {
             this.$emit('test', this.task)
             // console.log(this.task)
