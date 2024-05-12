@@ -1,13 +1,22 @@
 import axios from 'axios'
 import router from '@/router'
+import { reactive } from 'vue'
 
 export default {
     state: () => ( {
         tasks: [],
+        default_subtask: {
+            title: '',
+            description: '',
+            done: false
+        }
     }),
     getters: {
         getTasks(state) {
             return state.tasks
+        },
+        getDefaultSubtask(state) {
+            return state.default_subtask
         }
     },
     mutations: {
@@ -23,6 +32,14 @@ export default {
         },
         deleteTask(state, task) {
             state.tasks = state.tasks.filter(t => t.id_task != task.id_task)
+        },
+        createSubtask(state, data) {
+            state.tasks.forEach(task => {
+                if (task.id_task == data.task.id_task) {
+                    task.subtasks.push(data.subtask)
+                }
+            })
+
         },
         updateSubtask(state, stask) {
             state.tasks.forEach(task => {
@@ -48,7 +65,7 @@ export default {
                     }
                 })
                 const tasks = await res.data
-
+                console.log(tasks)
                 ctx.commit('setTasks', tasks)
             } catch {
                 localStorage.setItem('isAuthenticated', false)
@@ -72,11 +89,40 @@ export default {
                 await axios.delete(`/delete_task_solo/${task.id_task}/`, {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
+                    }
                 })
                 ctx.commit('deleteTask', task)
             } catch(e) {
                 alert('Такой задачи не существует.')
+            }
+        },
+        async createSubtask(ctx, task){
+            try {
+                const res = await axios.post(
+                    `create_subtask/${task.id_task}/`, 
+                    {
+                        title: '',
+                        description: '',
+                        done: false
+                    }, 
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                        }
+                })
+                const new_subtask = await res.data
+                const subtask =  {
+                    description: new_subtask.description,
+                    done: new_subtask.done,
+                    id_subtask: new_subtask.id_subtask,
+                    title: new_subtask.title,
+                }
+                console.log('action: ', task.id_task)
+                ctx.commit('createSubtask', { subtask, task })
+                // ctx.dispatch('fetchAllTasks')
+            } catch(e) {
+                console.log(e)
+                // alert('Такой задачи не существует.')
             }
         },
         async updateSubtask(ctx, subtask) {
