@@ -1,7 +1,7 @@
 <template>
     <div class="checklists">
         <h1>Checklists view</h1>
-        <button v-if="getAuth" class="create-checklist" type="button">Добавить чеклист</button>
+        <button v-if="getAuth" class="create-checklist" type="button" @click="createTask">Добавить чеклист</button>
 
         <div v-if="getAuth" class="content">
             <!-- <Checklist class="checklist"></Checklist>
@@ -32,7 +32,7 @@ export default {
         ...mapGetters(['getAuth', 'getTasks'])
     },
     methods: {
-        ...mapActions(['checkAuth', 'fetchAllTasks']),
+        ...mapActions(['checkAuth', 'fetchAllTasks', 'createTask']),
         handleEmit(title) {
             console.log(title)
         }

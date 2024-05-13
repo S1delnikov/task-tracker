@@ -23,6 +23,9 @@ export default {
         setTasks(state, tasks) {
             state.tasks = tasks
         },
+        createTask(state, task){
+            state.tasks.push(task)
+        },
         updateTask(state, task) {
             state.tasks.forEach(t => {
                 if (t.id_task == task.id_task) {
@@ -72,6 +75,39 @@ export default {
                 router.push('/')
             }
         },
+        async createTask(ctx) {
+            try{
+                const res = await axios.post(
+                        `create_task_solo`, 
+                        {
+                            title: '',
+                            description: '',
+                            start_date: Date.now(),
+                            end_date: Date.now(),
+                            done: false
+                        }, 
+                        {
+                            headers: {
+                                Authorization: 'Bearer ' + localStorage.getItem('token')
+                            }
+                        }
+                    )
+                const new_task = await res.data
+                const task = {
+                    id_task: new_task.id_task,
+                    title: new_task.title,
+                    description: new_task.description,
+                    start_date: new_task.start_date,
+                    end_date: new_task.end_date,
+                    done: new_task.done,
+                    subtasks: []
+                }
+                ctx.commit('createTask', task)
+            } catch(e) {
+                localStorage.setItem('isAuthenticated', false)
+                router.push('/')
+            }
+        },
         async updateTask(ctx, task) {
             try {
                 await axios.put(`/update_task_solo/${task.id_task}/`, task, {
@@ -117,12 +153,10 @@ export default {
                     id_subtask: new_subtask.id_subtask,
                     title: new_subtask.title,
                 }
-                console.log('action: ', task.id_task)
                 ctx.commit('createSubtask', { subtask, task })
                 // ctx.dispatch('fetchAllTasks')
             } catch(e) {
-                console.log(e)
-                // alert('Такой задачи не существует.')
+                alert('Такой задачи не существует.')
             }
         },
         async updateSubtask(ctx, subtask) {
