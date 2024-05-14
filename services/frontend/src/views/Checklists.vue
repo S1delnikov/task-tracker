@@ -3,7 +3,7 @@
         <h1>Checklists view</h1>
         <button v-if="getAuth" class="create-checklist" type="button" @click="createTask">Добавить чеклист</button>
 
-        <div v-if="getAuth" class="content">
+        <div v-if="getAuth" @mouseover="redraw" class="content" v-masonry="containerId" transition-duration="0.4s" item-selector=".item" stagger="0.03s">
             <!-- <Checklist class="checklist"></Checklist>
             <Checklist class="checklist"></Checklist>
             <Checklist class="checklist"></Checklist>
@@ -12,7 +12,7 @@
             <Checklist class="checklist"></Checklist>
             <Checklist class="checklist"></Checklist>
             <Checklist class="checklist"></Checklist> -->
-            <Checklist v-for="task in getTasks" :key="task.id_task" v-bind:task="task" @test="handleEmit"></Checklist>
+            <Checklist v-masonry-tile class="item" v-for="task in getTasks" :key="task.id_task" v-bind:task="task" @test="handleEmit"></Checklist>
         </div>
         <div v-else>
             Нужно авторизоваться
@@ -23,8 +23,12 @@
 <script>
 import Checklist from "@/components/Checklist.vue"
 import { mapActions, mapGetters } from 'vuex'
+
 export default {
     name: 'Checklists',
+    data: () => ({
+        containerId: 'containerId'
+    }),
     components: {
         Checklist
     },
@@ -35,11 +39,17 @@ export default {
         ...mapActions(['checkAuth', 'fetchAllTasks', 'createTask']),
         handleEmit(title) {
             console.log(title)
+        },
+        redraw() {        
+            this.$redrawVueMasonry(this.containerId)
         }
     },
     mounted() {
         this.checkAuth()
         this.fetchAllTasks()
+    },
+    updated() {
+        this.redraw()
     }
 }
 </script>
@@ -68,6 +78,10 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     /* justify-content: space-between; */
+}
+
+.item {
+    margin-bottom: 1rem;
 }
 
 .checklist {

@@ -42,7 +42,6 @@ export default {
                     task.subtasks.push(data.subtask)
                 }
             })
-
         },
         updateSubtask(state, stask) {
             state.tasks.forEach(task => {
@@ -68,7 +67,6 @@ export default {
                     }
                 })
                 const tasks = await res.data
-                console.log(tasks)
                 ctx.commit('setTasks', tasks)
             } catch {
                 localStorage.setItem('isAuthenticated', false)
