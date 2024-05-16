@@ -6,8 +6,8 @@ from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserRegSchema, UserOutSchema
 from schemas.token import Token
 from database.models import Users
+from file_system.settings import IMAGES_USERS_DIR
 from errors.my_errors import USERNAME_IS_OCCUPIED_ERROR, INCORRECT_UN_OR_PSWD_ERROR
-
 
 async def create_user(data: UserRegSchema, db: db_dependency):
     try:
@@ -20,6 +20,8 @@ async def create_user(data: UserRegSchema, db: db_dependency):
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
+
+        IMAGES_USERS_DIR.joinpath(str(new_user.id_user)).mkdir()
     except: 
         raise USERNAME_IS_OCCUPIED_ERROR
     return UserOutSchema(id_user=new_user.id_user, username=new_user.username)

@@ -2,7 +2,9 @@
     <div class="checklists">
         <h1>Checklists view</h1>
         <button v-if="getAuth" class="create-checklist" type="button" @click="createTask">Добавить чеклист</button>
-
+        <button v-if="getAuth" type="button" @click="loadProfilePic">Картинка</button>
+        <img v-if="getAuth" :src="getProfilePic" alt="">
+        <img src="https://via.placeholder.com/600/92c952" alt="">
         <div v-if="getAuth" @mouseover="redraw" class="content" v-masonry="containerId" transition-duration="0.4s" item-selector=".item" stagger="0.03s">
             <!-- <Checklist class="checklist"></Checklist>
             <Checklist class="checklist"></Checklist>
@@ -33,10 +35,10 @@ export default {
         Checklist
     },
     computed: {
-        ...mapGetters(['getAuth', 'getTasks'])
+        ...mapGetters(['getAuth', 'getTasks', 'getProfilePic'])
     },
     methods: {
-        ...mapActions(['checkAuth', 'fetchAllTasks', 'createTask']),
+        ...mapActions(['checkAuth', 'fetchAllTasks', 'createTask', 'loadProfilePic']),
         handleEmit(title) {
             console.log(title)
         },

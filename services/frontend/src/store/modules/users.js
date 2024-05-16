@@ -9,13 +9,18 @@ export default {
     state: {
         isAuth: false,
         username: '',
+        profilePic: '',
     },
     getters: {
         getAuth(state) {
             return state.isAuth
             // console.log(localStorage.getItem('isAuthenticated'))
             // return localStorage.getItem('isAuthenticated')
-          }
+        },
+        getProfilePic(state) {
+            console.log('getters: ', state.profilePic.path)
+            return state.profilePic
+        }
     },
     mutations: {
         setAuth(state, value) {
@@ -27,6 +32,9 @@ export default {
             localStorage.setItem('isAuthenticated', false);
             state.isAuth = false
         },
+        setProfilePic(state, picture) {
+            state.profilePic = picture
+        }
     },
     actions: {
         async login(ctx, form) {
@@ -56,6 +64,31 @@ export default {
             if (localStorage.getItem('isAuthenticated') == 'true') {
                 ctx.commit('setAuth', true)
             } 
+        },
+        async loadProfilePic(ctx) {
+            try {
+                const res = await axios.get('/get_profile_pic', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }, 
+                    responseType: 'blob' 
+                })
+                console.log(res.data)
+                // console.log(new Blob([res.data.profile_pic], {type: res.data.profile_pic.media_type}))
+                // const blob = await res.data.blob()
+                const url = URL.createObjectURL(res.data)
+
+                // const url = URL.createObjectURL(res.data)
+                // return url;
+
+                // const pic = await res.data.profile_pic
+
+                // console.log('actions: ', url)
+                // console.log(typeof(pic))
+                ctx.commit('setProfilePic', url)
+            } catch(e) {
+                console.log(e)
+            }
         }
     }
 }

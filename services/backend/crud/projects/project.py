@@ -2,6 +2,7 @@ from database.connection import db_dependency
 from schemas.project import ProjectInSchema, ProjectOutSchema, ProjectUserOutSchema
 from schemas.user import UserOutSchema
 from database.models import Projects, ProjectsUsers, Users
+from file_system.settings import IMAGES_PROJECTS_DIR
 from errors.my_errors import (
     PROJECT_NOT_EXIST_ERROR, 
     PERMISSION_DENIED_ERROR, 
@@ -32,6 +33,10 @@ async def create_proj(
     db.add(link_project_and_user)
     db.commit()
     db.refresh(link_project_and_user)
+
+    IMAGES_PROJECTS_DIR.joinpath(str(project.id_project)).mkdir()
+    IMAGES_PROJECTS_DIR.joinpath(str(project.id_project)).joinpath('logo').mkdir()
+    IMAGES_PROJECTS_DIR.joinpath(str(project.id_project)).joinpath('tasks').mkdir()
 
     return  {
         "project": ProjectOutSchema.model_validate(project),
