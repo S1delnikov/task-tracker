@@ -4,7 +4,7 @@
         <button v-if="getAuth" class="create-checklist" type="button" @click="createTask">Добавить чеклист</button>
         <button v-if="getAuth" type="button" @click="loadProfilePic">Картинка</button>
         <img v-if="getAuth" :src="getProfilePic" alt="">
-        <img src="https://via.placeholder.com/600/92c952" alt="">
+        <img src="https://www.dropbox.com/scl/fi/uk39eg1mtp2pm34vsjdvp/antarctica3.jpg?rlkey=fd8on8x3zhyfdzldl8nw4cdyd&st=k0ntluum&dl=0" alt="">
         <div v-if="getAuth" @mouseover="redraw" class="content" v-masonry="containerId" transition-duration="0.4s" item-selector=".item" stagger="0.03s">
             <!-- <Checklist class="checklist"></Checklist>
             <Checklist class="checklist"></Checklist>
