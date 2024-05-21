@@ -24,7 +24,7 @@ async def create_user(data: UserRegSchema, db: db_dependency):
         IMAGES_USERS_DIR.joinpath(str(new_user.id_user)).mkdir()
     except: 
         raise USERNAME_IS_OCCUPIED_ERROR
-    return UserOutSchema(id_user=new_user.id_user, username=new_user.username)
+    return UserOutSchema(id_user=new_user.id_user, username=new_user.username, email=new_user.email, picture=new_user.picture)
 
 
 async def login(username, password: str, db: db_dependency):

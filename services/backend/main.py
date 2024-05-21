@@ -14,6 +14,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 from routes import users, tasks, subtasks, projects, pictures
 
+from fastapi.staticfiles import StaticFiles
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -23,6 +26,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+static_folder = 'images'
+app.mount('/images', StaticFiles(directory=static_folder))
 
 models.Base.metadata.create_all(bind=engine)
 
