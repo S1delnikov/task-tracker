@@ -49,6 +49,8 @@ class UserOutSchema(BaseModel):
     """
     id_user: int
     username: str
+    email: str
+    picture: str
 
     class Config:
         from_attributes = True

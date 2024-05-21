@@ -41,6 +41,7 @@ class TaskSoloOutSchema(BaseModel):
     start_date: datetime
     end_date: datetime
     done: bool = False
+    picture: str
     subtasks: List[SubtaskOutSchema] = None
     
     class Config:
@@ -97,6 +98,7 @@ class TaskProjOutSchema(BaseModel):
     done: bool = False
     rank: str = ""
     category: str = "Надо сделать"
+    picture: str
     id_project: int
     id_user: int
     subtasks: List[SubtaskOutSchema] = None

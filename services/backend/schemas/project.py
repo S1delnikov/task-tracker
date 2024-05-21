@@ -28,6 +28,7 @@ class ProjectOutSchema(BaseModel):
     id_project: int
     name: str
     description: str
+    picture: str
 
     class Config:
         from_attributes = True
