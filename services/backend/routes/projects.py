@@ -18,6 +18,14 @@ async def create_proj(
     return await crud_proj.create_proj(data=data, id_user=current_user.id_user, db=db)
 
 
+@router.get('/get_projects')
+async def get_projects(
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.get_projects(id_user=current_user.id_user, db=db)
+
+
 @router.put('/update_proj/{id_project}')
 async def update_proj(
     id_project,

@@ -45,6 +45,21 @@ async def create_proj(
     # return proj
 
 
+async def get_projects(
+       id_user: int,
+       db: db_dependency
+):
+    projects = \
+        db.query(Projects)\
+        .join(ProjectsUsers, ProjectsUsers.id_project==Projects.id_project)\
+        .filter(ProjectsUsers.id_user==id_user)\
+        .all()
+    
+    projects = [ProjectOutSchema.model_validate(project) for project in projects]
+
+    return projects
+
+
 async def update_proj(
         data: ProjectInSchema,
         id_project: int,
