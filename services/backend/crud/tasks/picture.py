@@ -1,10 +1,11 @@
 from fastapi import HTTPException, status, UploadFile, File
 from fastapi.responses import FileResponse
 from database.connection import db_dependency
-from database.models import Users, ProjectsUsers, Projects, Tasks
+from database.models import Users, ProjectsUsers, Projects, Tasks, Subtasks
 from schemas.user import UserOutSchema
 from schemas.project import ProjectOutSchema
 from schemas.task import TaskProjOutSchema
+from schemas.subtask import SubtaskOutSchema
 from time import time
 from file_system.settings import ALLOWED_CONTENT_TYPE, IMAGES_PROJECTS_DIR, DEFAULT_TASK_PIC, BASE_DIR
 from file_system.methods import compress_image
@@ -34,6 +35,9 @@ async def upload_task_pic(
          raise TASK_NOT_EXIST_ERROR
 
     if picture.content_type in ALLOWED_CONTENT_TYPE:
+        if task.picture != DEFAULT_TASK_PIC:   
+            print(str(BASE_DIR) + task.picture)      
+            remove(str(BASE_DIR) + task.picture)
         picture.filename = f"{time()}_{id_project}.{picture.content_type.split('/')[1]}"
         dest_path = f"{IMAGES_PROJECTS_DIR}/{id_project}/tasks/{picture.filename}"
         with open(dest_path, 'wb+') as dest:
@@ -50,7 +54,12 @@ async def upload_task_pic(
         db.commit()
         db.refresh(task)
 
-        return TaskProjOutSchema.model_validate(task)
+        task = TaskProjOutSchema.model_validate(task)
+        subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
+        subtasks = [SubtaskOutSchema.model_validate(subtask) for subtask in subtasks]
+        task.subtasks = subtasks
+
+        return task
     else: 
         raise IMAGE_TYPE_NOT_ALLOWED
     
@@ -81,9 +90,9 @@ async def delete_task_pic(
     db.commit()
     db.refresh(task)
 
-    return TaskProjOutSchema.model_validate(task)
+    task = TaskProjOutSchema.model_validate(task)
+    subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
+    subtasks = [SubtaskOutSchema.model_validate(subtask) for subtask in subtasks]
+    task.subtasks = subtasks
 
-
-    
-
-
+    return task

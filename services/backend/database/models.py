@@ -43,7 +43,7 @@ class Tasks(Base):
     done = Column(Boolean, default=False)
     rank = Column(String, default="")
     category = Column(String, default="")
-    picture = Column(String, default="/images/users/default/task_pic/task_pic.jpeg")
+    picture = Column(String, default="/images/default/task_pic/task_pic.jpeg")
     id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"), default=None)
     id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"))
 
@@ -66,7 +66,7 @@ class Projects(Base):
     id_project = Column(Integer, primary_key=True, index=True)
     name = Column(String, default="")
     description = Column(String, default="")
-    picture = Column(String, default="/images/users/default/project_pic/project_pic.jpg")
+    picture = Column(String, default="/images/default/project_pic/project_pic.jpg")
 
 
 class ProjectsUsers(Base):

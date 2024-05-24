@@ -32,7 +32,12 @@ async  def create_task(
     db.commit()
     db.refresh(task)
 
-    return TaskProjOutSchema.model_validate(task)
+    task = TaskProjOutSchema.model_validate(task)
+    subtasks = db.query(Subtasks).filter(Subtasks.id_task==task.id_task).all()
+    subtasks = [SubtaskOutSchema.model_validate(subtask) for subtask in subtasks]
+    task.subtasks = subtasks
+
+    return task
 
 
 async def update_task(
