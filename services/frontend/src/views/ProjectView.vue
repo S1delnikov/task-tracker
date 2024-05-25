@@ -81,6 +81,31 @@
                                 <img src="@/assets/icons/move-one-right-icon.svg" @click="changeTaskProjCategory({'id_project':id_project, 'taskProj': taskProj, 'category': 'Выполнено'})" alt="">
                             </div>
                         </div>
+                        <div class="task__subtasks">
+                            <div class="subtasks__open-list">
+                                <input type="text" class="hidden">
+                                <button class="subtasks__btn" type="button" @click="showSubtasks(taskProj.id_task)">
+                                    Подзадачи: {{ taskProj.subtasks.length }}
+                                    ({{ taskProj.subtasks.filter(s => s.done == true).length }}/{{ taskProj.subtasks.length }})
+                                </button>
+                            </div>
+                            <div class="subtasks__list hidden" :id="`subtasks-${taskProj.id_task}`">
+                                <div class="subtask" v-for="subtask in taskProj.subtasks" :key="subtask.id_subtask" >
+                                    <label class="subtask__checkbox">
+                                        <input class="subtask__real-checkbox" type="checkbox" v-model="subtask.done" @change="updateSubtaskProj(subtask)">
+                                        <span class="subtask__custom-checkbox"></span>
+                                    </label>
+                                    <input class="subtask__text" type="text" v-model="subtask.description" :title="subtask.description">
+                                    <button class="subtask__update" type="button" @click="updateSubtaskProj(subtask)"><img src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
+                                    <button class="subtask__delete" type="button" @click="deleteSubtaskProj(subtask)"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
+                                </div>
+                                <div class="subtasks__add-todo">
+                                    <button class="add-todo" type="button" @click="createSubtaskProj(taskProj)">
+                                        <img src="@/assets/icons/plus-icon.webp" alt="Добавить">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,6 +131,31 @@
                             </div>
                             <div class="control__btn to-in-progress">
                                 <img src="@/assets/icons/move-one-left-icon.svg" @click="changeTaskProjCategory({'id_project':id_project, 'taskProj': taskProj, 'category': 'В процессе'})" alt="">
+                            </div>
+                        </div>
+                        <div class="task__subtasks">
+                            <div class="subtasks__open-list">
+                                <input type="text" class="hidden">
+                                <button class="subtasks__btn" type="button" @click="showSubtasks(taskProj.id_task)">
+                                    Подзадачи: {{ taskProj.subtasks.length }}
+                                    ({{ taskProj.subtasks.filter(s => s.done == true).length }}/{{ taskProj.subtasks.length }})
+                                </button>
+                            </div>
+                            <div class="subtasks__list hidden" :id="`subtasks-${taskProj.id_task}`">
+                                <div class="subtask" v-for="subtask in taskProj.subtasks" :key="subtask.id_subtask" >
+                                    <label class="subtask__checkbox">
+                                        <input class="subtask__real-checkbox" type="checkbox" v-model="subtask.done" @change="updateSubtaskProj(subtask)">
+                                        <span class="subtask__custom-checkbox"></span>
+                                    </label>
+                                    <input class="subtask__text" type="text" v-model="subtask.description" :title="subtask.description">
+                                    <button class="subtask__update" type="button" @click="updateSubtaskProj(subtask)"><img src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
+                                    <button class="subtask__delete" type="button" @click="deleteSubtaskProj(subtask)"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
+                                </div>
+                                <div class="subtasks__add-todo">
+                                    <button class="add-todo" type="button" @click="createSubtaskProj(taskProj)">
+                                        <img src="@/assets/icons/plus-icon.webp" alt="Добавить">
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,9 +203,9 @@ export default {
 </script>
 
 <style scoped>
-/* .project {
+.project {
     height: fit-content;   
-} */
+}
 
 .project__create-project {
     font-size: 1.6rem;
@@ -191,16 +241,11 @@ export default {
     text-align: center;
 }
 
-/* .test {
-    height: 50rem;
-    background-color: #fff;
-} */
-
 .project__task-board {
+    position: relative;  /* mvp */
     background-color: #8EE4AF;
     width: 30%;
-    /* height: 89vh; */
-    height: fit-content;
+    height: 89vh;
     overflow: scroll;
     scroll-behavior: smooth;
     scrollbar-width: thin;
@@ -527,16 +572,4 @@ export default {
 .add-todo:hover {
     background-color: #51c47f;
 }
-
-/* .project__in-progress-board {
-    background-color: blue;
-    width: 30%;
-    height: 95vh;
-}
-
-.project__done-board {
-    background-color: red;
-    width: 30%;
-    height: 95vh;
-} */
 </style>

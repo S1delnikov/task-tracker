@@ -23,9 +23,8 @@ export default {
 }
 </script>
 
-<style>
+<!-- <style>
 .task-board__task {
-    /* height: 10%; */
     background-color: #EDF5E1;
     margin-top: 1rem;
 }
@@ -54,4 +53,4 @@ export default {
     width: 30%;
     margin: 1rem auto;
 }
-</style>
+</style> -->
