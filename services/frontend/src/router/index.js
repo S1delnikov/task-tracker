@@ -21,7 +21,7 @@ const routes = [
     component: ProjectsMenu
   },
   {
-    path: '/project',
+    path: '/project/:id_project',
     name: 'ProjectView',
     component: ProjectView
   },

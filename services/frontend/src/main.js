@@ -8,6 +8,7 @@ import { VueMasonryPlugin } from 'vue-masonry'
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://127.0.0.1:8000'  // FastAPI backend
+// axios.defaults.baseURL = 'https://task-tracker-5t53.onrender.com'
 
 const app = createApp(App)
 

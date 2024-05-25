@@ -1,20 +1,28 @@
 <template>
     <div class="menu-item">
         <div class="menu-item__preview">
-            <img class="preview" src="@/assets/antarctica3.jpg" alt="Изображение проекта">
+            <!-- <router-link to="" > -->
+                <img class="preview" @click="$router.push(`/project/${project.id_project}`)" :src="project.picture" alt="Изображение проекта">
+            <!-- </router-link> -->
         </div>
         <div class="menu-item__name">
-            <h2 class="name">Project name</h2>
+            <h2 class="name">{{ project.name }}</h2>
         </div>
         <div class="menu-item__description">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt hic aperiam dolor blanditiis, rem perspiciatis officia itaque necessitatibus laudantium magni iusto praesentium quod quo dolore distinctio optio quisquam. Atque nisi voluptatem quidem, possimus numquam hic reiciendis iusto libero at beatae voluptate repellendus voluptates rem cupiditate repudiandae? Quia pariatur illo distinctio similique cum, assumenda modi ipsa, consectetur esse nihil natus fuga? Harum molestias tempore consequatur quas ea a numquam necessitatibus aliquam molestiae aspernatur temporibus itaque repudiandae odit autem ipsum soluta possimus maxime, qui dolor inventore vel delectus! Accusantium veniam doloremque maxime accusamus excepturi laudantium maiores distinctio? Perspiciatis fuga velit dolores aspernatur!. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus vero possimus nobis quisquam harum, laboriosam voluptas quam quasi provident ipsum.</p>
+            <p>{{ project.description }} Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur culpa et illo cupiditate necessitatibus nostrum quis delectus ratione quaerat deserunt. Nulla eum rerum iste delectus ut tempora sunt suscipit, corrupti quia iure voluptate ipsam beatae natus pariatur! Earum nobis minus provident modi, veritatis sit vel reiciendis omnis hic eius. Illum dicta, ipsa aspernatur perspiciatis repellendus voluptatem vel cumque, voluptates illo excepturi vitae quod! Saepe quia repudiandae nihil cumque pariatur facilis asperiores doloremque odit excepturi a totam, illum id sapiente nostrum, consequuntur numquam tempore veniam voluptates dolorem voluptatem dolor commodi alias? Aspernatur, maiores assumenda ea odio aliquid nostrum dolorum quis nobis.</p>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'ProjectMenuItem'
+    name: 'ProjectMenuItem',
+    props: {
+        project: {
+            type: Object,
+            required: true
+        }
+    }
 }
 </script>
 

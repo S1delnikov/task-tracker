@@ -18,7 +18,7 @@ export default {
             // return localStorage.getItem('isAuthenticated')
         },
         getProfilePic(state) {
-            console.log('getters: ', state.profilePic.path)
+            // console.log('getters: ', state.profilePic.path)
             return state.profilePic
         }
     },
@@ -71,21 +71,21 @@ export default {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token')
                     }, 
-                    // responseType: 'blob' 
+                    responseType: 'blob' 
                 })
                 console.log(res.data)
                 // console.log(new Blob([res.data.profile_pic], {type: res.data.profile_pic.media_type}))
                 // const blob = await res.data.blob()
                 // const url = URL.createObjectURL(res.data)
 
-                // const url = URL.createObjectURL(res.data)
+                const url = URL.createObjectURL(res.data)
                 // return url;
 
                 // const pic = await res.data.profile_pic
 
-                // console.log('actions: ', url)
+                console.log('actions: ', url)
                 // console.log(typeof(pic))
-                ctx.commit('setProfilePic', res.data.profile_pic)
+                ctx.commit('setProfilePic', url)
             } catch(e) {
                 console.log(e)
             }

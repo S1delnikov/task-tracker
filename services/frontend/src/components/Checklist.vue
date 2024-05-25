@@ -10,7 +10,7 @@
             </div>
             <div class="checklist__main">
                 <div class="checklist__todo" v-for="subtask in task.subtasks" :key="subtask.id_subtask">
-                    <label>
+                    <label class="todo__checkbox">
                         <input class="todo__real-checkbox" type="checkbox" v-model="subtask.done" @change="updateSubtask(subtask)">
                         <span class="todo__custom-checkbox"></span>
                     </label>
@@ -98,6 +98,7 @@ export default {
     text-align: center;
     background-color: #E6ECDC;
     border: none;
+    width: 90%
 }
 
 .checklist__todo {
@@ -105,6 +106,10 @@ export default {
     justify-content: space-between;
     margin-bottom: 1rem;
     align-items: center;
+}
+
+.todo__checkbox {
+    padding-right: 1rem;
 }
 
 .todo__real-checkbox {

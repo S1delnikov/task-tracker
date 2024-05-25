@@ -23,6 +23,7 @@ export default {
   box-sizing: border-box;
   font-size: 10px;
   font-family: 'Courier New', Courier, monospace;
+  /* overflow: hidden;  ??? */
 }
 
 .main {

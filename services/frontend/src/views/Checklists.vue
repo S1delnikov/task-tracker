@@ -1,19 +1,14 @@
 <template>
     <div class="checklists">
-        <h1>Checklists view</h1>
         <button v-if="getAuth" class="create-checklist" type="button" @click="createTask">Добавить чеклист</button>
-        <button v-if="getAuth" type="button" @click="loadProfilePic">Картинка</button>
+        <!-- <button v-if="getAuth" type="button" @click="loadProfilePic">Картинка</button>
         <img v-if="getAuth" :src="getProfilePic" alt="">
-        <img src="https://www.dropbox.com/scl/fi/uk39eg1mtp2pm34vsjdvp/antarctica3.jpg?rlkey=fd8on8x3zhyfdzldl8nw4cdyd&st=k0ntluum&dl=0" alt="">
+        <img src="http://127.0.0.1:8000/static/qwerty.jpg" alt="" srcset="">
+        <img src="http://127.0.0.1:8000/static/pepe.jpeg" alt="" srcset="">
+        <img src="https://sun1-91.userapi.com/impg/M3CmYvxNZjaJXL0ylFV-pFLVyaR4LPSoYe0GWA/9K4feptusnU.jpg?size=792x1118&quality=95&sign=36636e9b884c8952192e7c61d67777d3&type=album" alt="" srcset="">
+        <img src="https://sun9-22.userapi.com/impg/DVhZ9Puv2Ba30KZ1qhYotx9Iz6nalRKsJ04S5A/oMoy6286i4U.jpg?size=406x604&quality=96&sign=0a75add7ef1cc2e4c73c9130be0243be&type=album" alt="" srcset="">
+        <img src="https://www.dropbox.com/scl/fi/uk39eg1mtp2pm34vsjdvp/antarctica3.jpg?rlkey=fd8on8x3zhyfdzldl8nw4cdyd&st=k0ntluum&dl=0" alt=""> -->
         <div v-if="getAuth" @mouseover="redraw" class="content" v-masonry="containerId" transition-duration="0.4s" item-selector=".item" stagger="0.03s">
-            <!-- <Checklist class="checklist"></Checklist>
-            <Checklist class="checklist"></Checklist>
-            <Checklist class="checklist"></Checklist>
-            <Checklist class="checklist"></Checklist>
-            <Checklist class="checklist"></Checklist>
-            <Checklist class="checklist"></Checklist>
-            <Checklist class="checklist"></Checklist>
-            <Checklist class="checklist"></Checklist> -->
             <Checklist v-masonry-tile class="item" v-for="task in getTasks" :key="task.id_task" v-bind:task="task" @test="handleEmit"></Checklist>
         </div>
         <div v-else>

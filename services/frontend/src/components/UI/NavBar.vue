@@ -4,7 +4,7 @@
     <nav class="sidebar">
         <div class="user">
             <div class="user__picture">
-                <img src="@/assets/pepe.jpeg" alt="Profile picture" class="user__picture">
+                <img src="http://127.0.0.1:8000/images/default/profile_pic/profile_pic.jpeg" alt="Profile picture" class="user__picture">
             </div>
             <div class="user__username">Pepe The Frog</div>
         </div>
