@@ -2,6 +2,7 @@ import axios from 'axios'
 import router from '@/router'
 import { useAttrs } from 'vue'
 import { routeLocationKey } from 'vue-router'
+import { reactive } from 'vue'
 
 import { state } from '../index'
 
@@ -10,6 +11,8 @@ export default {
         isAuth: false,
         username: '',
         profilePic: '',
+        currentUser: '',
+        currentUserRights: '',
     },
     getters: {
         getAuth(state) {
@@ -20,11 +23,23 @@ export default {
         getProfilePic(state) {
             // console.log('getters: ', state.profilePic.path)
             return state.profilePic
+        },
+        getCurrentUser(state) {
+            return state.currentUser
+        },
+        getCurrentUserRights(state) {
+            return state.currentUserRights
         }
     },
     mutations: {
         setAuth(state, value) {
             state.isAuth = value
+        },
+        setCurrentUser(state, currentUser) {
+            state.currentUser = currentUser
+        },
+        setCurrentUserRights(state, currentUserRights) {
+            state.currentUserRights = currentUserRights
         },
         logout(state) {
             localStorage.removeItem('token')
@@ -64,6 +79,10 @@ export default {
             if (localStorage.getItem('isAuthenticated') == 'true') {
                 ctx.commit('setAuth', true)
             } 
+            else {
+                localStorage.setItem('isAuthenticated', false)
+                router.push('/')
+            }
         },
         async loadProfilePic(ctx) {
             try {
@@ -89,6 +108,34 @@ export default {
             } catch(e) {
                 console.log(e)
             }
-        }
+        },
+        async fetchCurrentUser(ctx) {
+            try {
+                const res = await axios.get('/about', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                const currentUser = res.data
+                ctx.commit('setCurrentUser', currentUser)
+            } catch(e) {
+                localStorage.setItem('isAuthenticated', false)
+                router.push('/')
+            }
+        },
+        async fetchCurrentUserRights(ctx, id_project) {
+            try {
+                const res = await axios.get(`/about/${id_project}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                const currentUserRights = await res.data.rights
+                ctx.commit('setCurrentUserRights', currentUserRights)
+            } catch(e) {
+                localStorage.setItem('isAuthenticated', false)
+                router.push('/')
+            }
+        },
     }
 }

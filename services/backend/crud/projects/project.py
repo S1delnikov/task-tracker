@@ -6,7 +6,8 @@ from file_system.settings import IMAGES_PROJECTS_DIR
 from errors.my_errors import (
     PROJECT_NOT_EXIST_ERROR, 
     PERMISSION_DENIED_ERROR, 
-    USER_NOT_EXIST_ERROR, 
+    USER_NOT_EXIST_ERROR,
+    USER_IS_ALREADY_A_MEMBER,
     USER_IS_NOT_A_MEMBER,
     SUICIDE_IS_NOT_A_WAY_OUT
 )
@@ -106,11 +107,14 @@ async def delete_proj(
 async def add_member(
         id_project: int,
         id_user: int,
-        id_new_user: int,
+        username: str,
         db: db_dependency,
         role: str = "editor",
 ):
     """Метод добавления сторонних пользователей в проект."""
+    new_user = db.query(Users).filter(Users.username==username).first()
+    if not new_user:
+        raise USER_NOT_EXIST_ERROR
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not project:
         raise PROJECT_NOT_EXIST_ERROR
@@ -118,23 +122,20 @@ async def add_member(
         raise PERMISSION_DENIED_ERROR
     del project
 
-    new_user = db.query(Users).filter(Users.id_user==id_new_user).first()
-    if not new_user:
-        raise USER_NOT_EXIST_ERROR
-    del new_user
+    # del new_user
 
     new_member = ProjectsUsers(
         id_project = id_project,
-        id_user = id_new_user,
+        id_user = new_user.id_user,
         role = role
     )
     try:
         db.add(new_member)
         db.commit()
     except:
-        return {"message": "This user is already a member of the project."}
+        raise USER_IS_ALREADY_A_MEMBER
 
-    return {"new_project_member": ProjectUserOutSchema.model_validate(new_member)}
+    return UserOutSchema.model_validate(new_user)
 
 
 async def delete_member(
@@ -170,11 +171,13 @@ async def get_member(
     if not project:
         raise PROJECT_NOT_EXIST_ERROR
     del project
-    user = db.query(Users).join(ProjectsUsers, ProjectsUsers.id_user==id_user).filter(ProjectsUsers.id_project==id_project).first()
+    # user = db.query(Users).join(ProjectsUsers, ProjectsUsers.id_user==id_user).filter(ProjectsUsers.id_project==id_project).first()
+    user = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     if not user:
         raise USER_IS_NOT_A_MEMBER
     
-    return UserOutSchema.model_validate(user)
+    # return UserOutSchema.model_validate(user)
+    return ProjectUserOutSchema.model_validate(user)
 
 
 async def get_members(

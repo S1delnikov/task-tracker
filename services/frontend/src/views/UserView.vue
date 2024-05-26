@@ -58,7 +58,7 @@ export default {
             // return localStorage.getItem('isAuthenticated')
         }
     },
-    async mounted() {
+    created() {
         this.checkAuth()
     },
 }

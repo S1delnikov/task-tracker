@@ -4,8 +4,9 @@ from database.connection import db_dependency
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserRegSchema, UserOutSchema
+from schemas.project import ProjectUserOutSchema
 from schemas.token import Token
-from database.models import Users
+from database.models import Users, ProjectsUsers
 from file_system.settings import IMAGES_USERS_DIR
 from errors.my_errors import USERNAME_IS_OCCUPIED_ERROR, INCORRECT_UN_OR_PSWD_ERROR
 
@@ -38,3 +39,19 @@ async def login(username, password: str, db: db_dependency):
     return Token(access_token=access_token, token_type="bearer")
 
 
+async def about(
+       id_user: int,
+       db: db_dependency 
+):    
+    user = db.query(Users).filter(Users.id_user == id_user).first()
+    return UserOutSchema.model_validate(user)
+    
+
+async def about_rights(
+       id_user: int,
+       id_project: int,
+       db: db_dependency 
+):
+    user = db.query(Users).filter(Users.id_user == id_user).first()
+    rights = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
+    return {"user": UserOutSchema.model_validate(user), "rights": ProjectUserOutSchema.model_validate(rights)}

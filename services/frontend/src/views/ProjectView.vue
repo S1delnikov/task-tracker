@@ -3,6 +3,33 @@
         <div class="project__control">
             <button class="project__create-project" type="button" @click="createTaskProj(id_project)">Создать задачу</button>
             <button class="project__create-project" type="button">Участники</button>
+            <DialogView class="members" :show="true">
+                <div class="members__search"  v-if="getCurrentUserRights.role=='owner'">
+                    <input type="text" id="search-project-member" placeholder="Введите имя пользователя..." v-model="searchUsername">
+                    <button type="button" @click="addMember({'id_project': id_project, 'username': searchUsername})">Поиск</button>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                            <th>Идентификатор</th>
+                            <th>Псевдоним</th>
+                            <th v-if="getCurrentUserRights.role=='owner'">Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="member in getMembers" :key="member.id_user">
+                            <td>{{ member.username }}</td>
+                            <td>{{ member.username }}</td>
+                            <td v-if="getCurrentUserRights.role=='owner'"><button @click="deleteMember({'id_project': id_project, 'member': member})">Удалить</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <input type="text" name="" :value="member.id_user" id="">
+                    <input v-if="getCurrentUserRights.role=='owner'"  type="text" name="" :value="member.username" id="">
+                    <button v-if="getCurrentUserRights.role=='owner'" type="button" @click="deleteMember({'id_project': id_project, 'member': member})">Кнопка</button> -->
+                </div>
+            </DialogView>
         </div>
         <div class="project__boards">
             <div id="project__todo-board" class="project__task-board">
@@ -170,34 +197,33 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
     name: 'ProjectView',
     data: () => ({
-        id_project: ''
+        id_project: '',
+        searchUsername: ''
     }),
     computed: {
-        ...mapGetters(['getTasksProj', 'getAuth']),
+        ...mapGetters(['getTasksProj', 'getAuth', 'getCurrentUserRights', 'getMembers']),
     },
     methods: {
         ...mapMutations(['setIdProject']),
-        ...mapActions(['fetchAllTasksProj', 'createTaskProj', 'updateTaskProj', 'deleteTaskProj', 'uploadTaskProjectPic', 'deleteTaskProjectPic', 'changeTaskProjCategory', 'createSubtaskProj', 'updateSubtaskProj', 'deleteSubtaskProj']),
+        ...mapActions(['checkAuth', 'fetchCurrentUserRights', 'fetchAllMembers', 'addMember', 'deleteMember', 'fetchAllTasksProj', 'createTaskProj', 'updateTaskProj', 'deleteTaskProj', 'uploadTaskProjectPic', 'deleteTaskProjectPic', 'changeTaskProjCategory', 'createSubtaskProj', 'updateSubtaskProj', 'deleteSubtaskProj']),
         openFilePicker(id_filePicker){
             let filePicker = document.getElementById(`${id_filePicker}`)
             filePicker.click()
         },
         showSubtasks(id_task) {
             let list = document.getElementById(`subtasks-${id_task}`)
-            // if (list.style.display == 'none') {
-            //     list.style.display = 'block'
-            // }
-            // else {
-            //     list.style.display = 'none'
-            // }
             list.classList.toggle('hidden')
         },
     },
-    mounted() {
+    created() {
+        this.checkAuth()
         this.id_project = this.$route.params.id_project
-        console.log('data', this.id_project)
+    },
+    mounted() {
+        this.fetchCurrentUserRights(this.id_project)
+        this.fetchAllMembers(this.id_project)
         this.fetchAllTasksProj(this.$route.params.id_project)
-        this.setIdProject(this.$route.params.id_project)
+        // this.setIdProject(this.$route.params.id_project)
     },
 }
 </script>
@@ -567,9 +593,16 @@ export default {
 .add-todo {
     background-color: #5DE192;
     border: none;
+    border-radius: 1rem;
+    padding: 0.2rem;
 }
 
 .add-todo:hover {
     background-color: #51c47f;
+}
+
+.add-todo img{
+    display: block;
+    padding: auto;
 }
 </style>

@@ -3,6 +3,7 @@ import users from './modules/users'
 import tasks_solo from './modules/tasks_solo'
 import projects from './modules/projects'
 import tasks_proj from './modules/tasks_proj'
+import members from './modules/members'
 
 export default createStore({
   state: {
@@ -20,5 +21,6 @@ export default createStore({
     tasks_solo,
     projects,
     tasks_proj,
+    members,
   }
 })

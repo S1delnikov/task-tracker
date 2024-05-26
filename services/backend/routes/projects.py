@@ -45,15 +45,15 @@ async def delete_proj(
     return await crud_proj.delete_proj(id_project=id_project, id_user=current_user.id_user, db=db)
 
 
-@router.post('/add_member/{id_project}/{id_new_user}')
+@router.post('/add_member/{id_project}/{username}')
 async def add_member(
     id_project,
-    id_new_user,
+    username,
     current_user: Annotated[UserInSchema, Depends(get_current_user)],
     db: db_dependency,
     role: str = "editor"
 ):
-    return await crud_proj.add_member(id_project=id_project, id_user=current_user.id_user, id_new_user=id_new_user, role=role, db=db)
+    return await crud_proj.add_member(id_project=id_project, id_user=current_user.id_user, username=username, role=role, db=db)
 
 
 @router.delete('/delete_member/{id_project}/{id_member}')
@@ -73,3 +73,13 @@ async def get_members(
     db: db_dependency
 ):
     return await crud_proj.get_members(id_project=id_project, db=db)
+
+
+@router.get('/get_member/{id_project}/{id_member}')
+async def get_members(
+    id_project,
+    id_memeber,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud_proj.get_member(id_project=id_project, id_user=id_memeber, db=db)

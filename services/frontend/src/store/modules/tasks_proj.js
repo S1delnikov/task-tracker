@@ -268,6 +268,6 @@ export default {
                 localStorage.setItem('isAuthenticated', false)
                 router.push('/')
             }
-        }
+        },
     }
 }

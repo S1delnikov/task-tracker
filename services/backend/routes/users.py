@@ -4,10 +4,10 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from auth.users import authenticate_user
-from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, oauth2_scheme, create_access_token
+from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, oauth2_scheme, create_access_token, get_current_user
 from auth.users import get_password_hash
 from schemas.token import Token
-from schemas.user import UserRegSchema
+from schemas.user import UserInSchema, UserRegSchema
 from database.connection import db_dependency
 from database.models import Users
 import crud.users.user as crud
@@ -34,3 +34,21 @@ async def register(data: UserRegSchema, db: db_dependency):
 @router.get('/check')
 def check(token: Annotated[str, Depends(oauth2_scheme)]):
     return {"token": token}
+
+
+@router.get('/about')
+async def about(
+    current_user: Annotated[UserInSchema, Depends(get_current_user)], 
+    db: db_dependency
+):
+    return await crud.about(id_user=current_user.id_user, db=db)
+
+
+@router.get('/about/{id_project}')
+async def about_rights(
+    id_project,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)], 
+    db: db_dependency
+):
+    return await crud.about_rights(id_user=current_user.id_user, id_project=id_project, db=db)
+    
