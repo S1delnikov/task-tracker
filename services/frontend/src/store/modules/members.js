@@ -49,11 +49,11 @@ export default {
                 })
                 const newMember = await res.data
                 ctx.commit('addMember', newMember)
-
-                let search = document.getElementById('search-project-member')
-                search.value = ''
-
-                return true
+                if (res.status == 200){
+                    let search = document.getElementById('search-project-member')
+                    search.value = ''
+                    search.style.border = '0.1rem solid #ccd1c5'
+                }
             } catch(e) {
                 // console.log(e)
                 if (e.response.status == 400) {

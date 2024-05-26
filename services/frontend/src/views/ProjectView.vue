@@ -6,9 +6,9 @@
             <DialogView class="members" v-model:show="dialogVisible">
                 <div class="members__search"  v-if="getCurrentUserRights.role=='owner'">
                     <input type="text" id="search-project-member" placeholder="Введите имя пользователя..." v-model="searchUsername">
-                    <button type="button" @click="addMember({'id_project': id_project, 'username': searchUsername})">Поиск</button>
+                    <button type="button"@click="addMember({'id_project': id_project, 'username': searchUsername})">Добавить</button>
                 </div>
-                <div>
+                <div class="members__table">
                     <table>
                         <thead>
                             <tr>
@@ -21,13 +21,10 @@
                             <tr v-for="member in getMembers" :key="member.id_user">
                             <td>{{ member.username }}</td>
                             <td>{{ member.username }}</td>
-                            <td v-if="getCurrentUserRights.role=='owner'"><button @click="deleteMember({'id_project': id_project, 'member': member})">Удалить</button></td>
+                            <td v-if="getCurrentUserRights.role=='owner'"><button class="search__button" @click="deleteMember({'id_project': id_project, 'member': member})">Удалить</button></td>
                             </tr>
                         </tbody>
                     </table>
-                    <!-- <input type="text" name="" :value="member.id_user" id="">
-                    <input v-if="getCurrentUserRights.role=='owner'"  type="text" name="" :value="member.username" id="">
-                    <button v-if="getCurrentUserRights.role=='owner'" type="button" @click="deleteMember({'id_project': id_project, 'member': member})">Кнопка</button> -->
                 </div>
             </DialogView>
         </div>
@@ -251,6 +248,80 @@ export default {
 
 .project__create-project:hover {
     background-color: #318675;
+}
+
+.members__search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.members__search {
+    padding: 1rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.members__search input {
+    width: 80%;
+    margin-right: 2rem;
+    font-size: 1.6rem;
+    background-color: #E6ECDC;
+    border: none;
+    border-radius: 1.2rem;
+    padding: 1rem;
+}
+
+.members__search input:focus {
+    outline: 0.2rem solid #ccd1c5;
+}
+
+.members__search button {
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    background-color: #e6ecdc;
+    border: 0.1rem solid #ccd1c5;
+    border-radius: 1.2rem;
+}
+
+.members__search button:hover {
+    background-color: #ccd1c5;
+}
+
+.members__table {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+    width: 90%;
+}
+
+.members__table table, th, td {
+    text-align: center;
+    border: 0.1rem solid #ccd1c5;
+    border-collapse: collapse;
+}
+
+.members__table th {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.4rem;
+}
+
+.members__table td {
+    font-size: 1.2rem;
+    padding: 1rem;
+}
+
+.search__button {
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    background-color: #e6ecdc;
+    border: 0.1rem solid #ccd1c5;
+    border-radius: 1.2rem;
+}
+
+.search__button:hover {
+    background-color: #ccd1c5;
 }
 
 .project__boards {
