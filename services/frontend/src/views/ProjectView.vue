@@ -2,8 +2,8 @@
     <div class="project">
         <div class="project__control">
             <button class="project__create-project" type="button" @click="createTaskProj(id_project)">Создать задачу</button>
-            <button class="project__create-project" type="button">Участники</button>
-            <DialogView class="members" :show="true">
+            <button class="project__create-project" type="button" @click="showDialog">Участники</button>
+            <DialogView class="members" v-model:show="dialogVisible">
                 <div class="members__search"  v-if="getCurrentUserRights.role=='owner'">
                     <input type="text" id="search-project-member" placeholder="Введите имя пользователя..." v-model="searchUsername">
                     <button type="button" @click="addMember({'id_project': id_project, 'username': searchUsername})">Поиск</button>
@@ -198,7 +198,8 @@ export default {
     name: 'ProjectView',
     data: () => ({
         id_project: '',
-        searchUsername: ''
+        searchUsername: '',
+        dialogVisible: false
     }),
     computed: {
         ...mapGetters(['getTasksProj', 'getAuth', 'getCurrentUserRights', 'getMembers']),
@@ -206,6 +207,9 @@ export default {
     methods: {
         ...mapMutations(['setIdProject']),
         ...mapActions(['checkAuth', 'fetchCurrentUserRights', 'fetchAllMembers', 'addMember', 'deleteMember', 'fetchAllTasksProj', 'createTaskProj', 'updateTaskProj', 'deleteTaskProj', 'uploadTaskProjectPic', 'deleteTaskProjectPic', 'changeTaskProjCategory', 'createSubtaskProj', 'updateSubtaskProj', 'deleteSubtaskProj']),
+        showDialog() {
+            this.dialogVisible = true;
+        },
         openFilePicker(id_filePicker){
             let filePicker = document.getElementById(`${id_filePicker}`)
             filePicker.click()

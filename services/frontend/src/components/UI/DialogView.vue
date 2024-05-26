@@ -1,6 +1,6 @@
 <template>
-    <div class="dialog">
-        <div class="dialog__content">
+    <div class="dialog" v-if="show" @click="hideDialog">
+        <div @click.stop class="dialog__content">
             <slot></slot>
         </div>
     </div>
@@ -13,6 +13,11 @@ export default {
         show: {
             type: Boolean,
             default: false
+        }
+    },
+    methods: {
+        hideDialog() {
+            this.$emit('update:show', false)
         }
     }
 }
