@@ -20,3 +20,4 @@ IMAGE_TYPE_NOT_ALLOWED = HTTPException(status_code=400, detail="Image type not a
 
 FILE_IS_INFECTED = HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="The file is infected.")
 FILE_IS_NOT_EXIST = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File doesn't exist.")
+USER_IS_ALREADY_HAS_FILE = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This user is already has access to the file.")

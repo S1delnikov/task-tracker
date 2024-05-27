@@ -6,7 +6,7 @@ from shutil import rmtree
 from os import remove
 from file_system.settings import DOCUMENTS_DIR, TEMP_DIR, BASE_DIR
 from file_system.methods import compress_file
-from errors.my_errors import FILE_IS_NOT_EXIST, PERMISSION_DENIED_ERROR
+from errors.my_errors import FILE_IS_NOT_EXIST, PERMISSION_DENIED_ERROR, USER_NOT_EXIST_ERROR, USER_IS_ALREADY_HAS_FILE
 from fastapi import UploadFile
 
 
@@ -70,4 +70,37 @@ async def delete_document(
       db.commit()
       
       return DocumentSchema.model_validate(document)
-      
+
+
+async def share_document(
+      id_user: int,
+      id_document: int,
+      id_new_user: int,
+      db: db_dependency
+):
+      row = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_user, UsersDocuments.id_document==id_document).first()
+      if not row:
+            raise FILE_IS_NOT_EXIST
+      if row.role != "owner":
+            raise PERMISSION_DENIED_ERROR
+      del row 
+
+      exist = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_new_user, UsersDocuments.id_document==id_document).first()
+      if exist:
+            raise USER_IS_ALREADY_HAS_FILE
+
+      new_user = db.query(Users).filter(Users.id_user==id_new_user).first()
+      if not new_user:
+            raise USER_NOT_EXIST_ERROR
+      del new_user
+
+      new__user_document = UsersDocuments(
+            id_user = id_new_user,
+            id_document = id_document,
+            role = "editor"
+      )
+      db.add(new__user_document)
+      db.commit()
+      db.refresh(new__user_document)
+
+      return new__user_document
