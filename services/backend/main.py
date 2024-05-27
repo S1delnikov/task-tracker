@@ -12,7 +12,7 @@ from auth import jwthandler
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
-from routes import users, tasks, subtasks, projects, pictures
+from routes import users, tasks, subtasks, projects, pictures, documents
 
 from fastapi.staticfiles import StaticFiles
 
@@ -27,8 +27,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-static_folder = 'images'
-app.mount('/images', StaticFiles(directory=static_folder))
+static_folder_images = 'images'
+static_folder_documents = 'documents'
+
+app.mount('/images', StaticFiles(directory=static_folder_images))
+app.mount('/documents', StaticFiles(directory=static_folder_documents))
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -38,3 +41,4 @@ app.include_router(tasks.router)
 app.include_router(subtasks.router)
 app.include_router(projects.router)
 app.include_router(pictures.router)
+app.include_router(documents.router)
