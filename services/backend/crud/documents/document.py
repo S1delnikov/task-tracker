@@ -3,16 +3,17 @@ from database.models import Users, Documents, UsersDocuments
 from schemas.document import DocumentSchema
 from time import time
 from shutil import rmtree
-from os import listdir
-from file_system.settings import DOCUMENTS_DIR, TEMP_DIR
+from os import remove
+from file_system.settings import DOCUMENTS_DIR, TEMP_DIR, BASE_DIR
 from file_system.methods import compress_file
+from errors.my_errors import FILE_IS_NOT_EXIST, PERMISSION_DENIED_ERROR
 from fastapi import UploadFile
 
 
-async def upload_file(
-        id_user: int,
-        document: UploadFile,
-        db: db_dependency
+async def upload_document(
+      id_user: int,
+      document: UploadFile,
+      db: db_dependency
 ):
       print(document.content_type)
       old_filename = document.filename
@@ -33,7 +34,7 @@ async def upload_file(
 
       print(new_path)
       document = Documents(
-            name = "Документ",
+            name = old_filename,
             path = new_path
       )
       db.add(document)
@@ -49,3 +50,24 @@ async def upload_file(
       db.refresh(user_document)
 
       return {'document': DocumentSchema.model_validate(document), 'user_document': user_document}
+
+
+async def delete_document(
+      id_user: int,
+      id_document: int,
+      db: db_dependency
+):
+      row = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_user, UsersDocuments.id_document==id_document).first()
+      if not row:
+            raise FILE_IS_NOT_EXIST
+      if row.role != "owner":
+            raise PERMISSION_DENIED_ERROR
+      del row 
+
+      document = db.query(Documents).filter(Documents.id_document==id_document).first()
+      remove(str(BASE_DIR) + document.path)
+      db.delete(document)
+      db.commit()
+      
+      return DocumentSchema.model_validate(document)
+      

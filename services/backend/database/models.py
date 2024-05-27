@@ -92,7 +92,7 @@ class UsersDocuments(Base):
     __tablename__ = 'users_documents'
     id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"), primary_key=True)
     id_document = Column(Integer, ForeignKey("documents.id_document", ondelete="CASCADE"), primary_key=True)
-
+    role = Column(String, default="owner")
 
 
 

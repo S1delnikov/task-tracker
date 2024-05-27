@@ -18,4 +18,5 @@ SUICIDE_IS_NOT_A_WAY_OUT = HTTPException(status_code=status.HTTP_405_METHOD_NOT_
 FILE_IS_NOT_AN_IMAGE = HTTPException(status_code=400, detail="The file you tried to upload is not an image.")
 IMAGE_TYPE_NOT_ALLOWED = HTTPException(status_code=400, detail="Image type not allowed.")
 
-FILE_IS_INFECTED = HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="The file is infected")
+FILE_IS_INFECTED = HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="The file is infected.")
+FILE_IS_NOT_EXIST = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File doesn't exist.")

@@ -15,4 +15,13 @@ async def upload_document(
     document: UploadFile,
     db: db_dependency
 ):
-    return await crud.upload_file(id_user=current_user.id_user, document=document, db=db)
+    return await crud.upload_document(id_user=current_user.id_user, document=document, db=db)
+
+
+@router.delete('/delete_document/{id_document}')
+async def delete_document(
+    id_document,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud.delete_document(id_user=current_user.id_user, id_document=id_document, db=db)
