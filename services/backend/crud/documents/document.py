@@ -1,3 +1,4 @@
+from sqlalchemy import text
 from database.connection import db_dependency
 from database.models import Users, Documents, UsersDocuments
 from schemas.document import DocumentSchema
@@ -115,5 +116,12 @@ async def get_documents(
             return {'documents': []}
       del row
 
-      documents = db.query(Documents).join(UsersDocuments, UsersDocuments.id_document==Documents.id_document).filter(UsersDocuments.id_user==id_user).all()
+      query = text(" \
+                  select documents.id_document, documents.name, documents.path, users_documents.role from documents \
+                  join users_documents ON users_documents.id_document = documents.id_document \
+                  where users_documents.id_user=:id_user \
+                   ")
+      documents = db.execute(query, {'id_user': id_user})
+      documents = [dict(id_document=doc.id_document, name=doc.name, path=doc.path, role=doc.role) for doc in documents]
+      
       return {'documents': documents}
