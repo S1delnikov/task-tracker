@@ -78,23 +78,41 @@ class ProjectsUsers(Base):
     role = Column(String, default="owner")
 
 
-class Messages(Base):
-    """Таблица сообщений пользователей"""
-    __tablename__ = 'messages'
+class Documents(Base):
+    """Таблица документов"""
+    __tablename__ = 'documents'
 
-    id_message = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
-    id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"))
-    id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"))
+    id_document = Column(Integer, primary_key=True, index=True)
+    name = Column(String, default="doc")
+    path = Column(String, default="")
 
 
-class Contents(Base):
-    """Таблица с содержимым сообщений пользователя"""
-    __tablename__ = 'contents'
+class UsersDocuments(Base):
+    """Таблица-посредник между пользователями и документами"""
+    __tablename__ = 'users_documents'
+    id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"), primary_key=True)
+    id_document = Column(Integer, ForeignKey("documents.id_document", ondelete="CASCADE"), primary_key=True)
 
-    id_content = Column(Integer, primary_key=True, index=True)
-    text = Column(String, default="")
-    image = Column(String, default="") # путь к изображению
-    id_message = Column(Integer, ForeignKey("messages.id_message", ondelete="CASCADE"))
+
+
+
+# class Messages(Base):
+#     """Таблица сообщений пользователей"""
+#     __tablename__ = 'messages'
+
+#     id_message = Column(Integer, primary_key=True, index=True)
+#     created_at = Column(DateTime)
+#     updated_at = Column(DateTime)
+#     id_project = Column(Integer, ForeignKey("projects.id_project", ondelete="CASCADE"))
+#     id_user = Column(Integer, ForeignKey("users.id_user", ondelete="CASCADE"))
+
+
+# class Contents(Base):
+#     """Таблица с содержимым сообщений пользователя"""
+#     __tablename__ = 'contents'
+
+#     id_content = Column(Integer, primary_key=True, index=True)
+#     text = Column(String, default="")
+#     image = Column(String, default="") # путь к изображению
+#     id_message = Column(Integer, ForeignKey("messages.id_message", ondelete="CASCADE"))
 
