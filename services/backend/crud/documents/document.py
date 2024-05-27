@@ -104,3 +104,16 @@ async def share_document(
       db.refresh(new__user_document)
 
       return new__user_document
+
+
+async def get_documents(
+      id_user: int,
+      db: db_dependency      
+):
+      row = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_user).first()
+      if not row:
+            return {'documents': []}
+      del row
+
+      documents = db.query(Documents).join(UsersDocuments, UsersDocuments.id_document==Documents.id_document).filter(UsersDocuments.id_user==id_user).all()
+      return {'documents': documents}

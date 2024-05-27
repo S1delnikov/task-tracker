@@ -35,3 +35,11 @@ async def share_document(
     db: db_dependency
 ):
     return await crud.share_document(id_user=current_user.id_user, id_document=id_document, id_new_user=id_new_user, db=db)
+
+
+@router.get('/get_documents')
+async def get_document_users(
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud.get_documents(id_user=current_user.id_user, db=db)
