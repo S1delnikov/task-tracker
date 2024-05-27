@@ -10,6 +10,11 @@
         </div>
         <div class="sidebar__btns">
             <div class="sidebar__btn">
+                <button class="route-btn" @click="$router.push('/')">
+                    <img src="@/assets/icons/chat-icon.webp" alt="">   
+                    Профиль</button>
+            </div>
+            <div class="sidebar__btn">
                 <button @click="submenu" class="dropdown-btn">
                     <img src="@/assets/icons/tasks-icon.webp" alt="">   
                     Задачи</button>
@@ -19,14 +24,9 @@
                     </div>
             </div>
             <div class="sidebar__btn">
-                <button class="route-btn" @click="$router.push('/')">
+                <button class="route-btn" @click="$router.push('/documents')">
                     <img src="@/assets/icons/doc-icon.webp" alt="">   
                     Документы</button>
-            </div>
-            <div class="sidebar__btn">
-                <button class="route-btn" @click="$router.push('/')">
-                    <img src="@/assets/icons/chat-icon.webp" alt="">   
-                    Чаты</button>
             </div>
         </div>
     </nav>

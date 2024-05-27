@@ -3,6 +3,7 @@ import Checklists from '../views/Checklists.vue'
 import ProjectsMenu from '../views/ProjectsMenu.vue'
 import ProjectView from '../views/ProjectView.vue'
 import UserView from '../views/UserView.vue'
+import DocumentsView from '../views/DocumentsView.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/project/:id_project',
     name: 'ProjectView',
     component: ProjectView
+  },
+  {
+    path: '/documents',
+    name: 'DocumentsView',
+    component: DocumentsView
   },
   // {
   //   path: '/about',
