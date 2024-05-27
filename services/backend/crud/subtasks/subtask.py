@@ -40,7 +40,7 @@ async def update_subtask(data: SubtaskSchema, id_subtask: int, id_user, db: db_d
         db.query(Subtasks) \
         .join(Tasks, Tasks.id_task==Subtasks.id_task) \
         .join(Users, Users.id_user==Tasks.id_user) \
-        .filter(Users.id_user==id_user, Subtasks.id_subtask==id_subtask) \
+        .filter(Subtasks.id_subtask==id_subtask) \
         .first()
     
     if not subtask:
@@ -62,7 +62,7 @@ async def delete_subtask(id_subtask, id_user: int, db: db_dependency):
         db.query(Subtasks) \
         .join(Tasks, Tasks.id_task==Subtasks.id_task) \
         .join(Users, Users.id_user==Tasks.id_user) \
-        .filter(Users.id_user==id_user, Subtasks.id_subtask==id_subtask) \
+        .filter(Subtasks.id_subtask==id_subtask) \
         .first()
     
     if not subtask:
