@@ -192,3 +192,26 @@ async def get_documents(
       documents = [dict(id_document=doc.id_document, name=doc.name, path=doc.path, role=doc.role) for doc in documents]
 
       return {'documents': documents}
+
+
+async def get_document_users(
+      id_user: int,
+      id_document: int,
+      db: db_dependency
+):
+      row = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_user).first()
+      if row.role != 'owner':
+            raise PERMISSION_DENIED_ERROR
+      del row
+
+      query = text("\
+                        select users.id_user, users.username from users \
+                        join users_documents ON users_documents.id_user = users.id_user \
+                        where users_documents.id_document = :id_document and users_documents.id_user != :id_user \
+                  ")
+      users = db.execute(query, {'id_document': id_document, 'id_user': id_user})
+      users = [dict(id_user=user.id_user, username=user.username) for user in users]
+
+      return {'users': users}
+
+

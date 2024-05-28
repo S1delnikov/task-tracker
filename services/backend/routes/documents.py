@@ -62,3 +62,12 @@ async def get_document_users(
     db: db_dependency
 ):
     return await crud.get_documents(id_user=current_user.id_user, db=db)
+
+
+@router.get('/get_document_users/{id_document}')
+async def get_document_users(
+    id_document,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud.get_document_users(id_user=current_user.id_user, id_document=id_document, db=db)
