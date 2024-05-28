@@ -1,6 +1,7 @@
 from sqlalchemy import text
 from database.connection import db_dependency
 from database.models import Users, Documents, UsersDocuments
+from schemas.user import UserOutSchema
 from schemas.document import DocumentSchema
 from typing import List
 from time import time
@@ -168,9 +169,30 @@ async def share_document(
       )
       db.add(new__user_document)
       db.commit()
-      db.refresh(new__user_document)
+      # db.refresh(new__user_document)
 
-      return new__user_document
+      return UserOutSchema.model_validate(user)
+
+
+async def take_away_access(
+      id_owner: int,
+      id_document: int,
+      id_user: int,
+      db: db_dependency
+):
+      owner = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_owner, UsersDocuments.id_document==id_document, UsersDocuments.role=='owner').first()
+      if not owner:
+            raise PERMISSION_DENIED_ERROR
+      del owner
+
+      user = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_user, UsersDocuments.id_document==id_document).first()
+      if not user: 
+            raise USER_NOT_EXIST_ERROR
+      
+      db.delete(user)
+      db.commit()
+
+      return user
 
 
 async def get_documents(
