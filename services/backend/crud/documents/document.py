@@ -53,6 +53,26 @@ async def upload_document(
       return {'document': DocumentSchema.model_validate(document), 'user_document': user_document}
 
 
+async def update_document_name(
+      id_user: int,
+      id_document: int,
+      new_name: str,
+      db: db_dependency
+):
+      document = db.query(Documents)\
+                  .join(UsersDocuments, UsersDocuments.id_document==Documents.id_document)\
+                  .filter(UsersDocuments.id_user==id_user, UsersDocuments.role=='owner') \
+                  .first()
+      if document:
+            document.name = new_name
+            db.commit()
+            db.refresh(document)
+
+            return document
+      return 
+
+
+
 async def delete_document(
       id_user: int,
       id_document: int,
@@ -123,5 +143,5 @@ async def get_documents(
                    ")
       documents = db.execute(query, {'id_user': id_user})
       documents = [dict(id_document=doc.id_document, name=doc.name, path=doc.path, role=doc.role) for doc in documents]
-      
+
       return {'documents': documents}

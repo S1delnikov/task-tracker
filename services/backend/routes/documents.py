@@ -18,6 +18,16 @@ async def upload_document(
     return await crud.upload_document(id_user=current_user.id_user, document=document, db=db)
 
 
+@router.put('/update_document_name/{id_document}/{new_name}')
+async def update_document_name(
+    id_document,
+    new_name,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud.update_document_name(id_user=current_user.id_user, id_document=id_document, new_name=new_name, db=db)
+
+
 @router.delete('/delete_document/{id_document}')
 async def delete_document(
     id_document,
