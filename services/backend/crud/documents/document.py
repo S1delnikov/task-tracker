@@ -143,7 +143,7 @@ async def delete_document(
 async def share_document(
       id_user: int,
       id_document: int,
-      id_new_user: int,
+      new_user: str,
       db: db_dependency
 ):
       row = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_user, UsersDocuments.id_document==id_document).first()
@@ -153,17 +153,16 @@ async def share_document(
             raise PERMISSION_DENIED_ERROR
       del row 
 
-      exist = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_new_user, UsersDocuments.id_document==id_document).first()
+      user = db.query(Users).filter(Users.username==new_user).first()
+      if not user:
+            raise USER_NOT_EXIST_ERROR
+
+      exist = db.query(UsersDocuments).filter(UsersDocuments.id_user==user.id_user, UsersDocuments.id_document==id_document).first()
       if exist:
             raise USER_IS_ALREADY_HAS_FILE
 
-      new_user = db.query(Users).filter(Users.id_user==id_new_user).first()
-      if not new_user:
-            raise USER_NOT_EXIST_ERROR
-      del new_user
-
       new__user_document = UsersDocuments(
-            id_user = id_new_user,
+            id_user = user.id_user,
             id_document = id_document,
             role = "editor"
       )
