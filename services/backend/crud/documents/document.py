@@ -2,11 +2,12 @@ from sqlalchemy import text
 from database.connection import db_dependency
 from database.models import Users, Documents, UsersDocuments
 from schemas.document import DocumentSchema
+from typing import List
 from time import time
 from shutil import rmtree
 from os import remove
 from file_system.settings import DOCUMENTS_DIR, TEMP_DIR, BASE_DIR
-from file_system.methods import compress_file
+from file_system.methods import compress_file, compress_files
 from errors.my_errors import FILE_IS_NOT_EXIST, PERMISSION_DENIED_ERROR, USER_NOT_EXIST_ERROR, USER_IS_ALREADY_HAS_FILE
 from fastapi import UploadFile
 
@@ -36,6 +37,52 @@ async def upload_document(
       print(new_path)
       document = Documents(
             name = old_filename,
+            path = new_path
+      )
+      db.add(document)
+      db.commit()
+      db.refresh(document)
+
+      user_document = UsersDocuments(
+            id_user = id_user,
+            id_document = document.id_document
+      )
+      db.add(user_document)
+      db.commit()
+      db.refresh(user_document)
+
+      return {'document': DocumentSchema.model_validate(document), 'user_document': user_document}
+
+
+async def upload_documents(
+      id_user: int,
+      documents: List[UploadFile],
+      db: db_dependency
+):
+      temp_paths = []
+      old_filenames = [doc.filename for doc in documents]
+      for old_filename in old_filenames:
+            temp_path = f"{TEMP_DIR}/{id_user}/{old_filename}"
+            temp_paths.append(temp_path)
+      
+      temp_dir = f"{TEMP_DIR}/{id_user}"
+      zip_path = f"{DOCUMENTS_DIR}/{id_user}/{time()}_{id_user}.zip"
+
+      for index, temp_path in enumerate(temp_paths):
+            with open(temp_path, 'wb+') as dest:
+                  dest.write(documents[index].file.read())
+      await compress_files(file_paths=temp_paths, zip_path=zip_path, filenames=old_filenames)
+
+      rmtree(temp_dir)
+
+      TEMP_DIR.joinpath(str(id_user)).mkdir()
+    
+      new_path = ""
+      for node in zip_path.split('/')[-3:]:
+            new_path += f"/{node}"
+
+      document = Documents(
+            name = str(old_filenames),
             path = new_path
       )
       db.add(document)

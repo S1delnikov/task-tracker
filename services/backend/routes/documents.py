@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
-from typing import Annotated
+from typing import Annotated, List
 from database.connection import db_dependency
 from schemas.user import UserInSchema
 from auth.jwthandler import get_current_user
@@ -16,6 +16,15 @@ async def upload_document(
     db: db_dependency
 ):
     return await crud.upload_document(id_user=current_user.id_user, document=document, db=db)
+
+
+@router.post('/upload_documents')
+async def upload_documents(
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    documents: List[UploadFile],
+    db: db_dependency
+):
+    return await crud.upload_documents(id_user=current_user.id_user, documents=documents, db=db)
 
 
 @router.put('/update_document_name/{id_document}/{new_name}')
