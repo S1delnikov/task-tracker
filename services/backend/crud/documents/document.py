@@ -9,7 +9,7 @@ from shutil import rmtree
 from os import remove
 from file_system.settings import DOCUMENTS_DIR, TEMP_DIR, BASE_DIR
 from file_system.methods import compress_file, compress_files
-from errors.my_errors import FILE_IS_NOT_EXIST, PERMISSION_DENIED_ERROR, USER_NOT_EXIST_ERROR, USER_IS_ALREADY_HAS_FILE
+from errors.my_errors import FILE_IS_NOT_EXIST, PERMISSION_DENIED_ERROR, USER_NOT_EXIST_ERROR, USER_IS_ALREADY_HAS_FILE, SUICIDE_IS_NOT_A_WAY_OUT
 from fastapi import UploadFile
 
 
@@ -193,6 +193,25 @@ async def take_away_access(
       db.commit()
 
       return user
+
+
+async def refuse_the_document(
+      id_user: int,
+      id_document: int,
+      db: db_dependency
+):
+      rights = db.query(UsersDocuments).filter(UsersDocuments.id_document==id_document, UsersDocuments.id_user==id_user).first()
+
+      if not rights:
+            raise FILE_IS_NOT_EXIST
+
+      if rights.role == 'owner':
+            raise SUICIDE_IS_NOT_A_WAY_OUT
+      
+      db.delete(rights)
+      db.commit()
+
+      return rights
 
 
 async def get_documents(

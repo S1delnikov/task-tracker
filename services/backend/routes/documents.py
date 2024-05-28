@@ -66,6 +66,15 @@ async def take_away_access(
     return await crud.take_away_access(id_owner=current_user.id_user, id_document=id_document, id_user=id_user, db=db)
 
 
+@router.delete('/refuse_the_document/{id_document}')
+async def refuse_the_document(
+    id_document,
+    current_user: Annotated[UserInSchema, Depends(get_current_user)],
+    db: db_dependency
+):
+    return await crud.refuse_the_document(id_user=current_user.id_user, id_document=id_document, db=db)
+
+
 @router.get('/get_documents')
 async def get_document_users(
     current_user: Annotated[UserInSchema, Depends(get_current_user)],
