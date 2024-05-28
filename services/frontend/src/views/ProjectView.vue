@@ -229,7 +229,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .project {
     height: fit-content;   
 }
