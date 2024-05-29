@@ -2,14 +2,15 @@
     <div class="menu-item">
         <div class="menu-item__control">
             <input type="button" class="hidden">
-            <button type="button" class="delete-btn"><img src="@/assets/icons/delete-task-proj-icon.webp"></button>
+            <button type="button" class="delete-btn" v-if="project.role=='owner'" @click="delProject(project.id_project)"><img src="@/assets/icons/delete-task-proj-icon.webp"></button>
+            <button type="button" class="delete-btn" v-if="project.role!='owner'" @click="leaveFromProject(project.id_project)"><img src="@/assets/icons/delete-task-proj-icon.webp"></button>
         </div>
         <div class="menu-item__preview">
             <div class="preview">
-                <div class="preview__control">
-                    <button type="button" class="add-btn"><img src="@/assets/icons/upload-task-pic.webp"></button>
-                    <input type="file" class="hidden">
-                    <button type="button" class="delete-btn"><img src="@/assets/icons/delete-task-pic.webp"></button>
+                <div class="preview__control" v-if="project.role=='owner'">
+                    <button type="button" class="add-btn"><img src="@/assets/icons/upload-task-pic.webp" @click="openFileDialog(project.id_project)"></button>
+                    <input type="file" accept="image/*" class="hidden" :id="`upload-proj-pic_${project.id_project}`" @change="uploadProjectPic({'id_project': project.id_project, 'file': $event.target.files[0]})">
+                    <button type="button" class="delete-btn" v-if="!project.picture.includes('/images/default/project_pic/project_pic.jpg')" @click="deleteProjectPic(project.id_project)"><img src="@/assets/icons/delete-task-pic.webp"></button>
                 </div>
                 <div class="preview__picture">
                     <img @click="$router.push(`/project/${project.id_project}`)" :src="project.picture" alt="Изображение проекта">
@@ -17,21 +18,44 @@
             </div>
         </div>
         <div class="menu-item__name">
-            <input class="name" v-model="project.name">
+            <input class="name" v-model="project.name" :disabled="project.role!='owner'" @change="updateProject(project)">
         </div>
         <div class="menu-item__description">
-            <textarea>{{ project.description }}</textarea>
+            <textarea v-model="project.description" :disabled="project.role!='owner'" @change="updateProject(project)"></textarea>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
     name: 'ProjectMenuItem',
     props: {
         project: {
             type: Object,
             required: true
+        }
+    },
+    methods: {
+        ...mapActions(['updateProject', 'deleteProject', 'leaveProject', 'uploadProjectPic', 'deleteProjectPic']),
+        delProject(id_project) {
+            let capibara = prompt('Для удаления проекта введите слово "Капибара".', '');
+            if (capibara != "Капибара" && capibara != null) {
+                alert('Ошибка удаления. Попробуйте снова.')
+            }
+            else if (capibara=="Капибара") {
+                this.deleteProject(id_project)              
+            }
+        },
+        leaveFromProject(id_project) {
+            let iWantLeave = confirm("Вы действительно хотите покинуть данный проект?")
+            if (iWantLeave) {
+                this.leaveProject(id_project)
+            }
+        },
+        openFileDialog(id_project) {
+            let fileDialog = document.getElementById(`upload-proj-pic_${id_project}`)
+            fileDialog.click()
         }
     }
 }

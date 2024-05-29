@@ -1,7 +1,7 @@
 <template>
     <div class="projects">
         <div class="projects_create-btn">
-            <button type="button">Создать проект</button>
+            <button type="button" @click="createProject">Создать проект</button>
         </div>
         <div class="projects__list">
             <ProjectMenuItem v-for="project in getProjects" :key="project.id_project" :project="project" class="project" />
@@ -22,7 +22,7 @@ export default {
     },
     computed: {...mapGetters(['getHost', 'getProjects'])},
     methods: {
-        ...mapActions(['fetchAllProjects']),
+        ...mapActions(['fetchAllProjects', 'createProject']),
         checkHost() {
             console.log(this.getHost)
         }
@@ -38,7 +38,8 @@ export default {
 } */
 
 .project {
-    margin: auto 4rem;
+    display: block;
+    margin: auto;
     margin-bottom: 4rem;
 }
 
@@ -55,5 +56,10 @@ export default {
 
 .projects_create-btn button:hover {
     background-color: #318675;
+}
+
+.projects__list {
+    display: flex;
+    flex-wrap: wrap;
 }
 </style>
