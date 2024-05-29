@@ -45,13 +45,13 @@ async def delete_proj(
     return await crud_proj.delete_proj(id_project=id_project, id_user=current_user.id_user, db=db)
 
 
-@router.delete('/leave_project/{id_project}')
+@router.delete('/leave_proj/{id_project}')
 async def leave_project(
     id_project,
     current_user: Annotated[UserInSchema, Depends(get_current_user)],
     db: db_dependency
 ):
-    return await crud_proj.leave_project(id_project=id_project, id_user=current_user.id_user, db=db)
+    return await crud_proj.leave_proj(id_project=id_project, id_user=current_user.id_user, db=db)
 
 
 @router.post('/add_member/{id_project}/{username}')

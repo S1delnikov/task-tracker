@@ -112,7 +112,7 @@ async def delete_proj(
     return {"message": "Project deleted successfully."}
 
 
-async def leave_project(
+async def leave_proj(
     id_project: int,
     id_user: int,
     db: db_dependency
