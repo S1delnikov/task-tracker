@@ -133,12 +133,12 @@ async def leave_proj(
 async def add_member(
         id_project: int,
         id_user: int,
-        username: str,
+        searchname: str,
         db: db_dependency,
         role: str = "editor",
 ):
     """Метод добавления сторонних пользователей в проект."""
-    new_user = db.query(Users).filter(Users.username==username).first()
+    new_user = db.query(Users).filter(Users.searchname==searchname).first()
     if not new_user:
         raise USER_NOT_EXIST_ERROR
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()

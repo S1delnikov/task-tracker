@@ -12,15 +12,15 @@
                     <table>
                         <thead>
                             <tr>
-                            <th>Идентификатор</th>
+                            <th>ID</th>
                             <th>Псевдоним</th>
                             <th v-if="getCurrentUserRights.role=='owner'">Действие</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="member in getMembers" :key="member.id_user">
-                            <td>{{ member.username }}</td>
-                            <td>{{ member.username }}</td>
+                            <td>{{ member.searchname }}</td>
+                            <td>{{ member.full_name }}</td>
                             <td v-if="getCurrentUserRights.role=='owner'"><button class="search__button" @click="deleteMember({'id_project': id_project, 'member': member})">Удалить</button></td>
                             </tr>
                         </tbody>

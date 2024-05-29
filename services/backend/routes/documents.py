@@ -53,7 +53,7 @@ async def share_document(
     current_user: Annotated[UserInSchema, Depends(get_current_user)],
     db: db_dependency
 ):
-    return await crud.share_document(id_user=current_user.id_user, id_document=id_document, new_user=new_user, db=db)
+    return await crud.share_document(id_user=current_user.id_user, id_document=id_document, searchname=new_user, db=db)
 
 
 @router.delete('/take_away_access/{id_document}/{id_user}')

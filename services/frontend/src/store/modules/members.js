@@ -6,7 +6,7 @@ import { reactive } from 'vue'
 export default {
     state: () => ({
         members: [],
-        
+        host: 'http://127.0.0.1:8000',
     }),
     getters: {
         getMembers(state) {
@@ -15,6 +15,9 @@ export default {
     },
     mutations: {
         setMembers(state, members) {
+            members.forEach(member => {
+                member.picture = state.host + member.picture
+            })
             state.members = members
         },
         addMember(state, new_member) {

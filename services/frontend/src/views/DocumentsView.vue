@@ -25,7 +25,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="user in getUsersWithAccess" :key="user.id_user">
-                                            <td>{{ user.username }}</td>
+                                            <td>{{ user.full_name }}</td>
                                             <td><button class="search__button" @click="takeAwayAccess({'id_document': document.id_document, 'id_user': user.id_user})">Удалить</button></td>
                                         </tr>
                                     </tbody>

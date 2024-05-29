@@ -144,7 +144,7 @@ async def delete_document(
 async def share_document(
       id_user: int,
       id_document: int,
-      new_user: str,
+      searchname: str,
       db: db_dependency
 ):
       row = db.query(UsersDocuments).filter(UsersDocuments.id_user==id_user, UsersDocuments.id_document==id_document).first()
@@ -154,7 +154,7 @@ async def share_document(
             raise PERMISSION_DENIED_ERROR
       del row 
 
-      user = db.query(Users).filter(Users.username==new_user).first()
+      user = db.query(Users).filter(Users.searchname==searchname).first()
       if not user:
             raise USER_NOT_EXIST_ERROR
 

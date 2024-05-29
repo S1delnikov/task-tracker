@@ -21,7 +21,7 @@ class Users(Base):
     password = Column(String)
     disabled = Column(Boolean, default=False)
     date_of_registration = Column(DateTime)
-    picture = Column(String, default="/images/users/default_profile_pic/default_profile_pic.jpeg")
+    picture = Column(String, default="/images/default/profile_pic/profile_pic.jpeg")
 
 
 class Friends(Base):
