@@ -98,7 +98,12 @@ export default {
     text-align: center;
     background-color: #E6ECDC;
     border: none;
-    width: 90%
+    width: 90%;
+    color: #000;
+}
+
+.title:focus {
+    outline: 0.1rem solid #ccd1c5;
 }
 
 .checklist__todo {
