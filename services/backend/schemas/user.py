@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+from time import time
 
 
 class UserRegSchema(BaseModel):
@@ -14,7 +15,7 @@ class UserRegSchema(BaseModel):
         from_attributes = True
     """
     username: str
-    email: str | None = None
+    searchname: str = time()
     password: str
     date_of_registration: datetime = datetime.now()
 
@@ -49,6 +50,8 @@ class UserOutSchema(BaseModel):
     """
     id_user: int
     username: str
+    searchname: str
+    full_name: str
     email: str
     picture: str
 

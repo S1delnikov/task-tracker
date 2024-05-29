@@ -14,8 +14,8 @@ async def create_user(data: UserRegSchema, db: db_dependency):
     try:
         new_user = Users (
             username=data.username,
+            searchname = data.searchname,
             password=get_password_hash(password=data.password),
-            email=data.email,
             date_of_registration=data.date_of_registration
         )
         db.add(new_user)
@@ -27,7 +27,8 @@ async def create_user(data: UserRegSchema, db: db_dependency):
         TEMP_DIR.joinpath(str(new_user.id_user)).mkdir()
     except: 
         raise USERNAME_IS_OCCUPIED_ERROR
-    return UserOutSchema(id_user=new_user.id_user, username=new_user.username, email=new_user.email, picture=new_user.picture)
+    # return UserOutSchema(id_user=new_user.id_user, username=new_user.username, email=new_user.email, picture=new_user.picture)
+    return UserOutSchema.model_validate(new_user)
 
 
 async def login(username, password: str, db: db_dependency):

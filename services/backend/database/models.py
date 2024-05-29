@@ -15,9 +15,11 @@ class Users(Base):
 
     id_user = Column(Integer, primary_key=True, index=True)
     username = Column(String, index=True, unique=True)
+    searchname = Column(String, index=True, unique=True)
+    full_name = Column(String, default="")
     email = Column(String, default="")
     password = Column(String)
-    disabled = Column(String, default=False)
+    disabled = Column(Boolean, default=False)
     date_of_registration = Column(DateTime)
     picture = Column(String, default="/images/users/default_profile_pic/default_profile_pic.jpeg")
 
