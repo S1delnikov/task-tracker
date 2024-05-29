@@ -1,15 +1,26 @@
 <template>
     <div class="menu-item">
+        <div class="menu-item__control">
+            <input type="button" class="hidden">
+            <button type="button" class="delete-btn"><img src="@/assets/icons/delete-task-proj-icon.webp"></button>
+        </div>
         <div class="menu-item__preview">
-            <!-- <router-link to="" > -->
-                <img class="preview" @click="$router.push(`/project/${project.id_project}`)" :src="project.picture" alt="Изображение проекта">
-            <!-- </router-link> -->
+            <div class="preview">
+                <div class="preview__control">
+                    <button type="button" class="add-btn"><img src="@/assets/icons/upload-task-pic.webp"></button>
+                    <input type="file" class="hidden">
+                    <button type="button" class="delete-btn"><img src="@/assets/icons/delete-task-pic.webp"></button>
+                </div>
+                <div class="preview__picture">
+                    <img @click="$router.push(`/project/${project.id_project}`)" :src="project.picture" alt="Изображение проекта">
+                </div>
+            </div>
         </div>
         <div class="menu-item__name">
-            <h2 class="name">{{ project.name }}</h2>
+            <input class="name" v-model="project.name">
         </div>
         <div class="menu-item__description">
-            <p>{{ project.description }} Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur culpa et illo cupiditate necessitatibus nostrum quis delectus ratione quaerat deserunt. Nulla eum rerum iste delectus ut tempora sunt suscipit, corrupti quia iure voluptate ipsam beatae natus pariatur! Earum nobis minus provident modi, veritatis sit vel reiciendis omnis hic eius. Illum dicta, ipsa aspernatur perspiciatis repellendus voluptatem vel cumque, voluptates illo excepturi vitae quod! Saepe quia repudiandae nihil cumque pariatur facilis asperiores doloremque odit excepturi a totam, illum id sapiente nostrum, consequuntur numquam tempore veniam voluptates dolorem voluptatem dolor commodi alias? Aspernatur, maiores assumenda ea odio aliquid nostrum dolorum quis nobis.</p>
+            <textarea>{{ project.description }}</textarea>
         </div>
     </div>
 </template>
@@ -34,25 +45,61 @@ export default {
     border-radius: 3rem;
 }
 
+.menu-item__control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-right: 0.2rem;
+}
+
 .menu-item__preview {
-    width: fit-content;
-    overflow: hidden;
-    display: block;
+    width: 100%;
+    /* overflow: hidden; */
+    /* display: block; */
     margin: 0 auto;
-    background-color: antiquewhite;
 }
 
 .preview {
-    width: 40rem;
-    border: 0.1rem solid #000;
+    width: 100%;
+    /* border: 0.1rem solid #000; */
+}
+
+.preview:hover {
+    cursor: pointer;
+}
+
+.preview__control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview__picture img{
+    display: block;
+    margin: 0 auto;
+    width: 90%;
+    border-radius: 2rem;
 }
 
 .menu-item__name {
-    display: block;
-    margin: 0 auto;
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 500;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.menu-item__name input {
+    background-color: #E6ECDC;
     text-align: center;
+    border: none;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.menu-item__name input:focus {
+    outline: 0.2rem solid #ccd1c5;
 }
 
 .name {
@@ -65,5 +112,52 @@ export default {
 .menu-item__description {
     display: block;
     margin: 0 auto;
+    background-color: #fff;
+}
+
+.menu-item__description textarea {
+    padding: 1rem;
+    resize: none;
+    width: 100%;
+    height: 10rem;
+    font-size: 1.4rem;
+    text-align: justify;
+    line-height: 2.0rem;
+    overflow-x: hidden;
+    background-color: #E6ECDC;
+    border: 0.1rem solid #ccd1c5;
+    border-radius: 1rem;
+}
+
+.menu-item__description textarea:focus {
+    outline: 0.2rem solid #ccd1c5;
+}
+
+.hidden {
+    opacity: 0;
+    height: 0;
+    width: 0;
+    line-height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.add-btn:hover {
+    background-color: #a4f3c2;
+}
+
+.delete-btn:hover {
+    background-color: #ffd8d8;
+}
+
+button {
+    background-color: #E6ECDC;
+    border: none;
+}   
+
+button > img{
+    display: block;
+    padding: auto;
 }
 </style>

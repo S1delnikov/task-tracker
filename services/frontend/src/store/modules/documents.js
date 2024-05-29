@@ -59,9 +59,10 @@ export default {
                 const documents = await res.data.documents
                 ctx.commit('setDocuments', documents)
             } catch(e) {
-                console.log(e)
-                // localStorage.setItem('isAuthenticated', false)
-                // router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async uploadDocument(ctx) {
@@ -95,8 +96,10 @@ export default {
                 ctx.commit('addDocument', document)
             } catch(e) {
                 console.log(e)
-                // localStorage.setItem('isAuthenticated', false)
-                // router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async updateDocumentName(ctx, data) {
@@ -111,9 +114,10 @@ export default {
                 ctx.commit('updateDocumentName', data)
                 
             } catch(e) {
-                console.log(e)
-                // localStorage.setItem('isAuthenticated', false)
-                // router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async fetchUsersWithAccess(ctx, id_document) {
@@ -127,9 +131,10 @@ export default {
                 const usersWithAccess  = res.data.users
                 ctx.commit('setUsersWithAccess', usersWithAccess)
             } catch(e) {
-                console.log(e)
-                // localStorage.setItem('isAuthenticated', false)
-                // router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async shareDocument(ctx, data) {
@@ -174,9 +179,10 @@ export default {
                 )
 
             } catch(e) {
-                console.log(e)
-                // localStorage.setItem('isAuthenticated', false)
-                // router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async deleteDocument(ctx, id_document) {
@@ -190,9 +196,10 @@ export default {
                     ctx.commit('deleteDocument', id_document)
                 )
             } catch(e) {
-                console.log(e)
-                // localStorage.setItem('isAuthenticated', false)
-                // router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async refuseDocument(ctx, id_document) {
