@@ -3,6 +3,8 @@ from schemas.task import TaskProjInSchema, TaskProjOutSchema
 from schemas.subtask import SubtaskOutSchema
 from database.models import Projects, ProjectsUsers, Tasks, Subtasks
 from errors.my_errors import PROJECT_NOT_EXIST_ERROR, PERMISSION_DENIED_ERROR, TASK_NOT_EXIST_ERROR
+from os import remove
+from file_system.settings import BASE_DIR, DEFAULT_TASK_PIC
 
 
 async  def create_task(
@@ -93,6 +95,9 @@ async def delete_task(
     if not task or task.id_project == None:
         raise TASK_NOT_EXIST_ERROR
     
+    if task.picture != DEFAULT_TASK_PIC:         
+        remove(str(BASE_DIR) + task.picture)
+
     db.delete(task)
     db.commit()
 
