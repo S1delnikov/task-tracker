@@ -1,6 +1,7 @@
 from database.connection import db_dependency
 from schemas.project import ProjectInSchema, ProjectOutSchema, ProjectUserOutSchema
 from schemas.user import UserOutSchema
+from sqlalchemy.sql import text
 from database.models import Projects, ProjectsUsers, Users
 from file_system.settings import IMAGES_PROJECTS_DIR
 from errors.my_errors import (
@@ -50,13 +51,20 @@ async def get_projects(
        id_user: int,
        db: db_dependency
 ):
-    projects = \
-        db.query(Projects)\
-        .join(ProjectsUsers, ProjectsUsers.id_project==Projects.id_project)\
-        .filter(ProjectsUsers.id_user==id_user)\
-        .all()
+    # projects = \
+    #     db.query(Projects)\
+    #     .join(ProjectsUsers, ProjectsUsers.id_project==Projects.id_project)\
+    #     .filter(ProjectsUsers.id_user==id_user)\
+    #     .all()
     
-    projects = [ProjectOutSchema.model_validate(project) for project in projects]
+    query = text("\
+                select projects.id_project, projects.name, projects.description, projects.picture, projects_users.role from projects \
+                join projects_users on projects_users.id_project = projects.id_project \
+                where projects_users.id_user = :id_user \
+            ")
+
+    projects = db.execute(query, {'id_user': id_user})
+    projects = [dict(id_project=project.id_project, name=project.name, description=project.description, picture=project.picture, role=project.role) for project in projects]
 
     return projects
 
@@ -102,6 +110,24 @@ async def delete_proj(
     db.commit()
 
     return {"message": "Project deleted successfully."}
+
+
+async def leave_project(
+    id_project: int,
+    id_user: int,
+    db: db_dependency
+):
+    """Метод выхода из проекта"""
+    rights = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
+    if not rights:
+        raise PROJECT_NOT_EXIST_ERROR
+    if rights.role == "owner":
+        raise PERMISSION_DENIED_ERROR
+    
+    db.delete(rights)
+    db.commit()
+
+    return rights
 
 
 async def add_member(
