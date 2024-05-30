@@ -245,12 +245,12 @@ async def get_document_users(
       del row
 
       query = text("\
-                        select users.id_user, users.username from users \
+                        select users.searchname, users.full_name from users \
                         join users_documents ON users_documents.id_user = users.id_user \
                         where users_documents.id_document = :id_document and users_documents.id_user != :id_user \
                   ")
       users = db.execute(query, {'id_document': id_document, 'id_user': id_user})
-      users = [dict(id_user=user.id_user, username=user.username) for user in users]
+      users = [dict(searchname=user.searchname, full_name=user.full_name) for user in users]
 
       return {'users': users}
 

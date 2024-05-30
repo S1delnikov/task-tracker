@@ -129,6 +129,7 @@ export default {
                     }
                 })
                 const usersWithAccess  = res.data.users
+                console.log(usersWithAccess)
                 ctx.commit('setUsersWithAccess', usersWithAccess)
             } catch(e) {
                 if (e.response.status == 401) {

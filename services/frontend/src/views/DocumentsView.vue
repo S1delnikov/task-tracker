@@ -19,13 +19,15 @@
                                 <table>
                                     <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Имя пользователя</th>
                                             <th>Действие</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="user in getUsersWithAccess" :key="user.id_user">
-                                            <td>{{ user.full_name }}</td>
+                                            <td class="limited" :title="user.searchname">{{ user.searchname }}</td>
+                                            <td class="limited" :title="user.full_name">{{ user.full_name }}</td>
                                             <td><button class="search__button" @click="takeAwayAccess({'id_document': document.id_document, 'id_user': user.id_user})">Удалить</button></td>
                                         </tr>
                                     </tbody>
@@ -181,7 +183,8 @@ export default {
     background-color: #EDF5E1;
     border-radius: 1.2rem;
     height: fit-content;
-    width: 50%;
+    /* width: 50%; */
+    width: fit-content;
 }
 
 .hidden {
@@ -264,5 +267,12 @@ export default {
 
 .dialog__delete-doc-btn:hover {
     background-color: #ccd1c5;
+}
+
+.limited {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 </style>
