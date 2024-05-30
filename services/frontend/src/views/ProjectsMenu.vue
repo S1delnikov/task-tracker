@@ -22,7 +22,7 @@ export default {
     },
     computed: {...mapGetters(['getHost', 'getProjects'])},
     methods: {
-        ...mapActions(['checkAuth', 'fetchAllProjects', 'createProject']),
+        ...mapActions(['checkAuth', 'fetchCurrentUser', 'fetchAllProjects', 'createProject']),
         checkHost() {
             console.log(this.getHost)
         }
@@ -31,6 +31,7 @@ export default {
         this.checkAuth()
     },
     mounted() {
+        this.fetchCurrentUser()
         this.fetchAllProjects()
     }
 }

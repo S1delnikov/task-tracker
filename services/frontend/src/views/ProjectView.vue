@@ -19,8 +19,8 @@
                         </thead>
                         <tbody>
                             <tr v-for="member in getMembers" :key="member.id_user">
-                            <td>{{ member.searchname }}</td>
-                            <td>{{ member.full_name }}</td>
+                            <td class="limited" :title="member.searchname">{{ member.searchname }}</td>
+                            <td class="limited" :title="member.full_name">{{ member.full_name }}</td>
                             <td v-if="getCurrentUserRights.role=='owner'"><button class="search__button" @click="deleteMember({'id_project': id_project, 'member': member})">Удалить</button></td>
                             </tr>
                         </tbody>
@@ -203,7 +203,7 @@ export default {
     },
     methods: {
         ...mapMutations(['setIdProject']),
-        ...mapActions(['checkAuth', 'fetchCurrentUserRights', 'fetchAllMembers', 'addMember', 'deleteMember', 'fetchAllTasksProj', 'createTaskProj', 'updateTaskProj', 'deleteTaskProj', 'uploadTaskProjectPic', 'deleteTaskProjectPic', 'changeTaskProjCategory', 'createSubtaskProj', 'updateSubtaskProj', 'deleteSubtaskProj']),
+        ...mapActions(['checkAuth', 'fetchCurrentUser', 'fetchCurrentUserRights', 'fetchAllMembers', 'addMember', 'deleteMember', 'fetchAllTasksProj', 'createTaskProj', 'updateTaskProj', 'deleteTaskProj', 'uploadTaskProjectPic', 'deleteTaskProjectPic', 'changeTaskProjCategory', 'createSubtaskProj', 'updateSubtaskProj', 'deleteSubtaskProj']),
         showDialog() {
             this.dialogVisible = true;
         },
@@ -221,6 +221,7 @@ export default {
         this.id_project = this.$route.params.id_project
     },
     mounted() {
+        this.fetchCurrentUser()
         this.fetchCurrentUserRights(this.id_project)
         this.fetchAllMembers(this.id_project)
         this.fetchAllTasksProj(this.$route.params.id_project)
@@ -679,5 +680,12 @@ export default {
 .add-todo img{
     display: block;
     padding: auto;
+}
+
+.limited {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 </style>

@@ -41,6 +41,7 @@ export default {
     background-color: #EDF5E1;
     border-radius: 1.2rem;
     height: fit-content;
-    width: 50%;
+    /* width: 50%; */
+    width: fit-content;
 }
 </style>

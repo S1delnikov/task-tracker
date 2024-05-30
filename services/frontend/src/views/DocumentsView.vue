@@ -49,7 +49,6 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
     name: 'DocumentsView',
     data: () => ({
-        dialogStatus: { },
         searchUsername: ''
     }),
     computed: {
@@ -57,7 +56,7 @@ export default {
         ...mapGetters(['getDocuments', 'getUsersWithAccess'])
     },
     methods: {
-        ...mapActions(['checkAuth', 'fetchAllDocuments', 'uploadDocument', 'deleteDocument', 'refuseDocument', 'updateDocumentName', 'fetchUsersWithAccess', 'shareDocument', 'takeAwayAccess']),
+        ...mapActions(['checkAuth', 'fetchCurrentUser', 'fetchAllDocuments', 'uploadDocument', 'deleteDocument', 'refuseDocument', 'updateDocumentName', 'fetchUsersWithAccess', 'shareDocument', 'takeAwayAccess']),
         openFileDialog() {
             let filePicker = document.getElementById('file-picker')
             filePicker.click()
@@ -71,17 +70,9 @@ export default {
     created() {
         this.checkAuth()
         this.fetchAllDocuments()
-        // console.log(this.dialogStatus)
-        for (let doc of this.getDocuments) {
-            this.dialogStatus[doc.id_document] = false
-        }
-        
     },
     mounted() {
-        for (let doc of this.getDocuments) {
-            this.dialogStatus[doc.id_document] = false
-        }
-        console.log(this.dialogStatus)
+        this.fetchCurrentUser()
     },
 
 }

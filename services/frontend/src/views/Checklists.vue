@@ -26,7 +26,7 @@ export default {
         ...mapGetters(['getAuth', 'getTasks', 'getProfilePic'])
     },
     methods: {
-        ...mapActions(['checkAuth', 'fetchAllTasks', 'createTask', 'loadProfilePic']),
+        ...mapActions(['checkAuth', 'fetchCurrentUser', 'fetchAllTasks', 'createTask', 'loadProfilePic']),
         handleEmit(title) {
             console.log(title)
         },
@@ -35,6 +35,7 @@ export default {
         }
     },
     mounted() {
+        this.fetchCurrentUser()
         this.checkAuth()
         this.fetchAllTasks()
     },
