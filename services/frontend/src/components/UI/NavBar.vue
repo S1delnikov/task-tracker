@@ -4,14 +4,15 @@
     <nav class="sidebar">
         <div class="user">
             <div class="user__picture">
-                <img src="http://127.0.0.1:8000/images/default/profile_pic/profile_pic.jpeg" alt="Profile picture" class="user__picture">
+                <img v-if="getCurrentUser" :src="getCurrentUser.picture" alt="Profile picture" class="user__picture">
+                <img v-else src="@/assets/icons/profile_pic.jpeg" class="user__picture" alt="Profile picture">
             </div>
-            <div class="user__username">Pepe The Frog</div>
+            <div class="user__username" :title="getCurrentUser.searchname">{{ getCurrentUser.searchname }}</div>
         </div>
         <div class="sidebar__btns">
             <div class="sidebar__btn">
                 <button class="route-btn" @click="$router.push('/')">
-                    <img src="@/assets/icons/chat-icon.webp" alt="">   
+                    <img src="@/assets/icons/menu-profile-icon.webp" alt="">   
                     Профиль</button>
             </div>
             <div class="sidebar__btn">
@@ -33,8 +34,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     name: 'NavBar',
+    computed: {
+        ...mapGetters(['getCurrentUser'])
+    },
     methods: {
         submenu() {
             let element = document.getElementsByClassName("dropdown-container")
@@ -149,5 +154,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     color: #fff;
+    display: block;
+    margin: auto;
 }
 </style>

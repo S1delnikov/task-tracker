@@ -55,7 +55,7 @@ export default {
         ...mapGetters(['getDocuments', 'getUsersWithAccess'])
     },
     methods: {
-        ...mapActions(['fetchAllDocuments', 'uploadDocument', 'deleteDocument', 'refuseDocument', 'updateDocumentName', 'fetchUsersWithAccess', 'shareDocument', 'takeAwayAccess']),
+        ...mapActions(['checkAuth', 'fetchAllDocuments', 'uploadDocument', 'deleteDocument', 'refuseDocument', 'updateDocumentName', 'fetchUsersWithAccess', 'shareDocument', 'takeAwayAccess']),
         openFileDialog() {
             let filePicker = document.getElementById('file-picker')
             filePicker.click()
@@ -67,6 +67,7 @@ export default {
         },
     },
     created() {
+        this.checkAuth()
         this.fetchAllDocuments()
         // console.log(this.dialogStatus)
         for (let doc of this.getDocuments) {

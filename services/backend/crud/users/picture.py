@@ -4,7 +4,7 @@ from database.connection import db_dependency
 from database.models import Users
 from schemas.user import UserOutSchema
 from file_system.settings import BASE_DIR, IMAGES_USERS_DIR, ALLOWED_CONTENT_TYPE, DEFAULT_PROFILE_PIC
-from file_system.methods import compress_image
+from file_system.methods import compress_image, resize_image
 from time import time
 from shutil import rmtree
 from os import listdir
@@ -24,7 +24,7 @@ async def upload_profile_pic(
             with open(dest_path, 'wb+') as dest:
                 dest.write(picture.file.read())
 
-            await compress_image(dest_path)
+            await resize_image(dest_path)
 
             new_path = ""
             for node in dest_path.split('/')[-4:]:

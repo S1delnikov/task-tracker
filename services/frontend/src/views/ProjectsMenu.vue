@@ -22,10 +22,13 @@ export default {
     },
     computed: {...mapGetters(['getHost', 'getProjects'])},
     methods: {
-        ...mapActions(['fetchAllProjects', 'createProject']),
+        ...mapActions(['checkAuth', 'fetchAllProjects', 'createProject']),
         checkHost() {
             console.log(this.getHost)
         }
+    },
+    created() {
+        this.checkAuth()
     },
     mounted() {
         this.fetchAllProjects()

@@ -7,7 +7,7 @@ from auth.users import authenticate_user
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, oauth2_scheme, create_access_token, get_current_user
 from auth.users import get_password_hash
 from schemas.token import Token
-from schemas.user import UserInSchema, UserRegSchema
+from schemas.user import UserInSchema, UserRegSchema, UserUpdateSchema
 from database.connection import db_dependency
 from database.models import Users
 import crud.users.user as crud
@@ -51,4 +51,12 @@ async def about_rights(
     db: db_dependency
 ):
     return await crud.about_rights(id_user=current_user.id_user, id_project=id_project, db=db)
-    
+
+
+@router.put('/update_user_info')
+async def update_user_info(
+    current_user: Annotated[UserInSchema, Depends(get_current_user)], 
+    data: UserUpdateSchema,
+    db: db_dependency
+):
+    return await crud.update_user_info(id_user=current_user.id_user, data=data, db=db)

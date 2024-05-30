@@ -40,6 +40,15 @@ class UserInSchema(BaseModel):
         from_attributes = True
 
 
+class UserUpdateSchema(BaseModel):
+    searchname: str
+    full_name: str
+    disabled: bool
+
+    class Config:
+        from_attributes = True
+
+
 class UserOutSchema(BaseModel):
     """Представление модели исходящих данных пользователя\n
     id_user: int
@@ -49,10 +58,11 @@ class UserOutSchema(BaseModel):
         from_attributes = True
     """
     id_user: int
-    username: str
+    # username: str
     searchname: str
     full_name: str
-    email: str
+    disabled: bool
+    # email: str
     picture: str
 
     class Config:

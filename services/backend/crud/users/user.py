@@ -3,7 +3,7 @@ from datetime import timedelta
 from database.connection import db_dependency
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
-from schemas.user import UserRegSchema, UserOutSchema
+from schemas.user import UserRegSchema, UserOutSchema, UserUpdateSchema
 from schemas.project import ProjectUserOutSchema
 from schemas.token import Token
 from database.models import Users, ProjectsUsers
@@ -58,3 +58,23 @@ async def about_rights(
     user = db.query(Users).filter(Users.id_user == id_user).first()
     rights = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()
     return {"user": UserOutSchema.model_validate(user), "rights": ProjectUserOutSchema.model_validate(rights)}
+
+
+async def update_user_info(
+        id_user: int,
+        data: UserUpdateSchema,
+        db: db_dependency
+):
+    try:
+        user = db.query(Users).filter(Users.id_user == id_user).first()
+        user.searchname = data.searchname
+        user.full_name = data.full_name
+        user.disabled = data.disabled
+        
+        db.commit()
+        db.refresh(user)
+
+        return UserOutSchema.model_validate(user)
+    except:
+        raise USERNAME_IS_OCCUPIED_ERROR
+

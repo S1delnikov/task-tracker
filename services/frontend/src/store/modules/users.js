@@ -1,10 +1,10 @@
 import axios from 'axios'
 import router from '@/router'
-import { useAttrs } from 'vue'
-import { routeLocationKey } from 'vue-router'
+// import { useAttrs } from 'vue'
+// import { routeLocationKey } from 'vue-router'
 import { reactive } from 'vue'
 
-import { state } from '../index'
+// import { state } from '../index'
 
 export default {
     state: {
@@ -13,6 +13,7 @@ export default {
         profilePic: '',
         currentUser: '',
         currentUserRights: '',
+        host: 'http://127.0.0.1:8000',
     },
     getters: {
         getAuth(state) {
@@ -36,6 +37,7 @@ export default {
             state.isAuth = value
         },
         setCurrentUser(state, currentUser) {
+            currentUser.picture = state.host + currentUser.picture
             state.currentUser = currentUser
         },
         setCurrentUserRights(state, currentUserRights) {
@@ -55,19 +57,20 @@ export default {
         async login(ctx, form) {
             if (form.login != '' && form.password != ''){
                 try{
-                const User = new FormData();
-                User.append('username', form.login);
-                User.append('password', form.password);
-                const token = await axios.post('login', User);
-                localStorage.setItem("token", token.data.access_token);
-                localStorage.setItem('username', form.login);
-                localStorage.setItem('isAuthenticated', true);
+                const User = new FormData()
+                User.append('username', form.login)
+                User.append('password', form.password)
+                const token = await axios.post('login', User)
+                localStorage.setItem("token", token.data.access_token)
+                localStorage.setItem('username', form.login)
+                localStorage.setItem('isAuthenticated', true)
             
                 ctx.commit('setAuth', true)
 
-                router.push('/');
+                // router.push('/')
+                location.reload()
                 } catch(e) {
-                  alert('Неправильный логин или пароль!');
+                  alert('Неправильный логин или пароль!')
                   ctx.commit('setAuthenticated', false)
                 }
             }
@@ -75,8 +78,9 @@ export default {
                 alert('Заполните все поля, чтобы продолжить')
               }
         },
-        checkAuth(ctx) {
-            if (localStorage.getItem('isAuthenticated') == 'true') {
+        async checkAuth(ctx) {
+            const isAuth = localStorage.getItem('isAuthenticated')
+            if (isAuth == 'true') {
                 ctx.commit('setAuth', true)
             } 
             else {
@@ -106,7 +110,10 @@ export default {
                 // console.log(typeof(pic))
                 ctx.commit('setProfilePic', url)
             } catch(e) {
-                console.log(e)
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async fetchCurrentUser(ctx) {
@@ -117,10 +124,13 @@ export default {
                     }
                 })
                 const currentUser = res.data
+                console.log(currentUser)
                 ctx.commit('setCurrentUser', currentUser)
             } catch(e) {
-                localStorage.setItem('isAuthenticated', false)
-                router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
         async fetchCurrentUserRights(ctx, id_project) {
@@ -133,9 +143,72 @@ export default {
                 const currentUserRights = await res.data.rights
                 ctx.commit('setCurrentUserRights', currentUserRights)
             } catch(e) {
-                localStorage.setItem('isAuthenticated', false)
-                router.push('/')
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
             }
         },
+        async updateUserInfo(ctx, currentUser) {
+            try {
+                console.log('start')
+                const res = await axios.put('/update_user_info', 
+                {
+                    "searchname": currentUser.searchname,
+                    "full_name": currentUser.full_name,
+                    "disabled": currentUser.disabled
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                }
+                )
+                const updatedUser = await res.data
+                ctx.commit('setCurrentUser', updatedUser)
+            } catch(e) {
+                if (e.response.status == 400) {
+                    alert('Данный идентификатор уже занят, попробуйте другой.')
+                }
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
+            }
+        },
+        async uploadProfilePic(ctx) {
+            try {
+                const file = new FormData()
+                file.append('picture', event.target.files[0])
+                const res = await axios.post('/upload_profile_pic', file, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                const userWithNewPicture = await res.data
+                ctx.commit('setCurrentUser', userWithNewPicture)
+            } catch(e) {
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
+            }
+        },
+        async deleteProfilePic(ctx) {
+            try {
+                const res = await axios.delete('/delete_profile_pic', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                const userWithoutPicture = await res.data
+                ctx.commit('setCurrentUser', userWithoutPicture)
+            } catch(e) {
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
+            }
+        }
     }
 }

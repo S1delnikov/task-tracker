@@ -12,4 +12,5 @@ DEFAULT_PROJECT_PIC = "/images/default/project_pic/project_pic.jpg"
 DEFAULT_TASK_PIC = "/images/default/task_pic/task_pic.jpeg"
 
 IMAGES_USERS_SIZE = (600, 300)
+PROFILE_PIC_SIZE = (300, 300)
 ALLOWED_CONTENT_TYPE = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp']
