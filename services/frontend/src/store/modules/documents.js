@@ -67,7 +67,6 @@ export default {
         },
         async uploadDocument(ctx) {
             try {
-                console.log('files', event.target.files)
                 const file = new FormData()
                 let endPoint
                 if (event.target.files.length==1) {
@@ -75,7 +74,6 @@ export default {
                     endPoint = '/upload_document'
                 }
                 else {
-                    console.log('more')
                     for (let i = 0; i <  event.target.files.length; i++) {
                         file.append('documents', event.target.files[i]);
                     }
@@ -92,10 +90,8 @@ export default {
                 )
                 const document = await res.data.document
                 document.role = await res.data.user_document.role
-                console.log('res', document)
                 ctx.commit('addDocument', document)
             } catch(e) {
-                console.log(e)
                 if (e.response.status == 401) {
                     localStorage.setItem('isAuthenticated', false)
                     router.push('/')
@@ -104,7 +100,6 @@ export default {
         },
         async updateDocumentName(ctx, data) {
             try {
-                console.log(data)
                 await axios.put(`/update_document_name/${data.id_document}/${data.new_name}`, {}, {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -129,7 +124,6 @@ export default {
                     }
                 })
                 const usersWithAccess  = res.data.users
-                console.log(usersWithAccess)
                 ctx.commit('setUsersWithAccess', usersWithAccess)
             } catch(e) {
                 if (e.response.status == 401) {
@@ -146,18 +140,15 @@ export default {
                     }
                 })
                 const user = await res.data
-                const newUserWithAccess = {'id_user': user.id_user, 'username': user.username}
+                const newUserWithAccess = {'id_user': user.id_user, 'searchname': user.searchname, 'full_name': user.full_name}
                 ctx.commit('addUserWithAccess', newUserWithAccess)
-
                 if (res.status == 200){
                     let search = document.getElementById('search-document-member')
                     search.value = ''
                     search.style.border = '0.1rem solid #ccd1c5'
                 }
             } catch(e) {
-                console.log(e)
                 if (e.response.status == 400) {
-                    console.log(400)
                     let search = document.getElementById('search-document-member')
                     search.style.border = '0.1rem solid red'
                     alert('Пользователь не найден.')

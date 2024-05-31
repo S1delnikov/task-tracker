@@ -154,7 +154,7 @@ async def share_document(
             raise PERMISSION_DENIED_ERROR
       del row 
 
-      user = db.query(Users).filter(Users.searchname==searchname).first()
+      user = db.query(Users).filter(Users.searchname==searchname, Users.disabled==True).first()
       if not user:
             raise USER_NOT_EXIST_ERROR
 

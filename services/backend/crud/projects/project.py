@@ -138,7 +138,7 @@ async def add_member(
         role: str = "editor",
 ):
     """Метод добавления сторонних пользователей в проект."""
-    new_user = db.query(Users).filter(Users.searchname==searchname).first()
+    new_user = db.query(Users).filter(Users.searchname==searchname, Users.disabled==True).first()
     if not new_user:
         raise USER_NOT_EXIST_ERROR
     project = db.query(ProjectsUsers).filter(ProjectsUsers.id_project==id_project, ProjectsUsers.id_user==id_user).first()

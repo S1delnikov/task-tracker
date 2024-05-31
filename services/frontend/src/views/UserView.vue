@@ -31,7 +31,7 @@
             <button class="logout-btn" type="button" @click="logoutSubmit">Выйти</button>
         </div>
         <div v-else>
-            <form v-show="hasAccount==false" @submit.prevent="login(form)" class="form">
+            <form v-show="hasAccount==true" @submit.prevent="login(form)" class="form">
                 <div class="form__header">
                     <h2>Авторизация</h2>
                 </div>
@@ -46,7 +46,7 @@
                     <button class="btn-submit" @click="switchForm">Создать аккаунт</button>
                 </div>
             </form>
-            <form v-show="hasAccount==true" @submit.prevent="tryRegister" class="form">
+            <form v-show="hasAccount==false" @submit.prevent="tryRegister" class="form">
                 <div class="form-header">
                     <h2>Регистрация</h2>
                 </div>
