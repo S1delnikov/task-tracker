@@ -60,3 +60,11 @@ async def update_user_info(
     db: db_dependency
 ):
     return await crud.update_user_info(id_user=current_user.id_user, data=data, db=db)
+
+
+@router.delete('/delete_user')
+async def delete_user(
+    current_user: Annotated[UserInSchema, Depends(get_current_user)], 
+    db: db_dependency
+):
+    return await crud.delete_user(id_user=current_user.id_user, db=db)

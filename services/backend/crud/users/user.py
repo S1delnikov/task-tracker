@@ -1,6 +1,8 @@
 from fastapi import HTTPException, status
 from datetime import timedelta
+from shutil import rmtree
 from database.connection import db_dependency
+from sqlalchemy.sql import text
 from auth.jwthandler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from auth.users import get_password_hash, authenticate_user
 from schemas.user import UserRegSchema, UserOutSchema, UserUpdateSchema
@@ -78,3 +80,26 @@ async def update_user_info(
     except:
         raise USERNAME_IS_OCCUPIED_ERROR
 
+
+async def delete_user(
+        id_user: int,
+        db: db_dependency
+):
+    user = db.query(Users).filter(Users.id_user==id_user).first()
+
+    delete_query = text('\
+                            delete from documents\
+                            using users_documents where users_documents.id_document = documents.id_document and users_documents.id_user = :id_user and users_documents.role=:role;\
+                            delete from projects\
+                            using projects_users where projects_users.id_project = projects.id_project and  projects_users.id_user = :id_user and projects_users.role=:role;\
+                        ')
+
+    db.execute(delete_query, {'id_user': id_user, 'role': 'owner'})
+    db.delete(user)
+    db.commit()
+    
+    rmtree(f"{IMAGES_USERS_DIR}/{id_user}")
+    rmtree(f"{DOCUMENTS_DIR}/{id_user}")
+    rmtree(f"{TEMP_DIR}/{id_user}")
+
+    return UserOutSchema.model_validate(user)
