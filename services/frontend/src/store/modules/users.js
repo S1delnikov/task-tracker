@@ -227,6 +227,23 @@ export default {
                     router.push('/')
                 }
             }
-        }
+        },
+        async deleteProfile() {
+            try {
+                const res = await axios.delete('/delete_user', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                alert('Аккаунт успешно удалён.')
+                localStorage.setItem('isAuthenticated', false)
+                location.reload()
+            } catch(e) {
+                if (e.response.status == 401) {
+                    localStorage.setItem('isAuthenticated', false)
+                    router.push('/')
+                }
+            }
+        },
     }
 }

@@ -28,7 +28,10 @@
                     </div>
                 </div>
             </div>
-            <button class="logout-btn" type="button" @click="logoutSubmit">Выйти</button>
+            <div class="profile__control">
+                <button class="profile__logout-btn" type="button" @click="logoutSubmit">Выйти</button>
+                <button class="profile__logout-btn" type="button" @click="confirmDelete">Удалить аккаунт</button>
+            </div>
         </div>
         <div v-else>
             <form v-show="hasAccount==true" @submit.prevent="login(form)" class="form">
@@ -88,7 +91,7 @@ export default {
     },
     methods: {
         ...mapMutations(['logout']),
-        ...mapActions(['register', 'login', 'checkAuth', 'fetchCurrentUser', 'updateUserInfo', 'uploadProfilePic', 'deleteProfilePic']),
+        ...mapActions(['register', 'login', 'checkAuth', 'fetchCurrentUser', 'updateUserInfo', 'uploadProfilePic', 'deleteProfilePic', 'deleteProfile']),
         openFilePicker() {
             let filePicker = document.getElementById('filePicker')
             filePicker.click()
@@ -140,6 +143,16 @@ export default {
                 currentUser.full_name = currentUser.searchname
             }
             this.updateUserInfo(currentUser)
+        },
+        async confirmDelete() {
+            let paracetomol = 'ПАРАЦЕТОМОЛ'
+            let input = prompt(`Для удаления проекта введите слово ${paracetomol}.`, '');
+            if (input != paracetomol && input != null) {
+                alert('Ошибка удаления. Попробуйте снова.')
+            }
+            else if (input==paracetomol) {
+                await this.deleteProfile()
+            }
         },
         switchForm() {
             this.hasAccount = !this.hasAccount
@@ -296,7 +309,14 @@ export default {
     background-color: #318675;
 }
 
-.logout-btn {
+.profile__control {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 2rem;
+    /* background-color: #fff; */
+}
+
+.profile__logout-btn {
     margin-left: 2rem;
     margin-bottom: 1rem;
     padding: 1rem 2.5rem;
@@ -306,7 +326,7 @@ export default {
     border-radius: 2rem;
 }
 
-.logout-btn:hover {
+.profile__logout-btn:hover {
     background-color: #ff9393;
 }
 
