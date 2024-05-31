@@ -47,18 +47,18 @@
                 </div>
             </form>
             <form v-show="hasAccount==false" @submit.prevent="tryRegister" class="form">
-                <div class="form-header">
+                <div class="form__header">
                     <h2>Регистрация</h2>
                 </div>
                 <div class="form__fields">
                     <label for="uname">Логин</label>
-                    <input class="users-input" v-model="form.login" type="text" name="uname" placeholder="Придумайте имя пользователя" required>
+                    <input class="users-input" id="regUsername" v-model="form.login" type="text" name="uname" placeholder="Придумайте имя пользователя" required>
                     
                     <label for="pswd">Пароль</label>
-                    <input class="users-input" v-model="form.password" type="password" name="pswd" placeholder="Придумайте пароль" required>
+                    <input class="users-input" id="regPassword" v-model="form.password" type="password" name="pswd" placeholder="Придумайте пароль" required>
 
                     <label for="pswdClone">Повторите пароль</label>
-                    <input class="users-input" v-model="passwordClone" type="password" name="pswdClone" placeholder="Повторите пароль" required>
+                    <input class="users-input" id="regRepeatPassword" v-model="passwordClone" type="password" name="pswdClone" placeholder="Повторите пароль" required>
 
                     <button class="btn-submit" type="submit">Зарегистрироваться</button>
                     <button class="btn-submit" @click="switchForm">Уже есть аккаунт</button>
@@ -94,16 +94,35 @@ export default {
             filePicker.click()
         },
         async tryRegister() {
+            let regUsername = document.getElementById('regUsername')
+            let regPassword = document.getElementById('regPassword')
+            let regRepeatPassword = document.getElementById('regRepeatPassword')
+            if (regUsername.value.length > 64 || regUsername.value.length < 5) {
+                alert('Длина логина должна быть от 5 до 64 символов без пробелов.')
+                return
+            }
+            regUsername.value = regUsername.value.trim()
+            if (regUsername.value.includes(' ')) {
+                alert('Логин не должен содержать пробелов')
+                return
+            }
+            if (regPassword.value.length < 9) {
+                alert('Минимальная длина пароля составляет 9 символов без пробелов')
+                return
+            }
+            regPassword.value = regPassword.value.trim()
+            if (regPassword.value.includes(' ')) {
+                alert('Пароль не должен содержать пробелов')
+                return
+            }
+            if (regPassword.value != regRepeatPassword.value) {
+                alert('Пароли не совпадают.')
+                return
+            }
             this.register(this.form)
         },
-        // async loginSubmit() {
-        //     await this.login(this.loginForm)
-        //     // return localStorage.getItem('isAuthenticated')
-        // },
         async logoutSubmit() {
             await this.logout()
-            // await this.logout()
-            // return localStorage.getItem('isAuthenticated')
         },
         async tryUpdateUserInfo(currentUser) {
             let searchnameInput = document.getElementById('searchname')
@@ -296,11 +315,21 @@ export default {
     margin: 0 auto;
     /* align-items: center; */
     width: 50%;
+    padding: 2rew;
+}
+
+.form__header {
+    padding-top: 1rem;
+}
+
+.form__header h2 {
+    font-size: 2.2rem;
 }
 
 .form__fields {
     display: flex;
     flex-direction: column;
+    padding-bottom: 1rem;
     /* align-items: center; */
 }
 
@@ -314,7 +343,7 @@ export default {
 }
 
 .btn-submit {
-    width: 20%;
+    width: fit-content;
     font-size: 1.6rem;
     margin-top: 3rem;
     margin-left: auto;
