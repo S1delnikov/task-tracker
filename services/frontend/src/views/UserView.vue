@@ -14,10 +14,12 @@
                     <div class="profile__searchname">
                         <p>Идентификатор:</p>
                         <input type="text" id="searchname" v-model="getCurrentUser.searchname" placeholder="По нему вас будут искать другие пользователи" title="По нему вас будут искать другие пользователи">
+                        <p v-if="getCurrentUser" class="input-counter">{{ getCurrentUser.searchname.length }}/32</p>
                     </div>
                     <div class="profile__full-name">
                         <p>Имя пользователя:</p>
                         <input type="text" id="full-name" v-model="getCurrentUser.full_name" placeholder="Его будет видно другим пользователям" title="Его будет видно другим пользователям">
+                        <p v-if="getCurrentUser" class="input-counter">{{ getCurrentUser.full_name.length }}/128</p>
                     </div>
                     <div class="profile__update-data">
                         <button type="button" @click="tryUpdateUserInfo(getCurrentUser)">Обновить</button>
@@ -139,7 +141,11 @@ export default {
                 alert('Идентификатор не должен содержать пробелов')
                 return
             }
-            if (fullNameInput.value.length > 128 || fullNameInput.value.length < 1) {
+            if (fullNameInput.value.length > 128) {
+                alert('Длина имени пользователя должна быть не меньше 1 и не больше 128 символов.')
+                return
+            }
+            if (fullNameInput.value.length < 1) {
                 currentUser.full_name = currentUser.searchname
             }
             this.updateUserInfo(currentUser)
@@ -275,6 +281,11 @@ export default {
 
 .profile__searchname p {
     font-size: 1.6rem;
+}
+
+.input-counter {
+    padding-top: 0.4rem;
+    
 }
 
 .profile__disabled {
