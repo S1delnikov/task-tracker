@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <nav class="sidebar">
         <div class="user">
-            <div class="user__picture">
+            <div class="user__picture" @click="$router.push('/')">
                 <img v-if="getCurrentUser" :src="getCurrentUser.picture" alt="Profile picture" class="user__picture">
                 <img v-else src="@/assets/icons/profile_pic.jpeg" class="user__picture" alt="Profile picture">
             </div>
@@ -145,7 +145,10 @@ export default {
     width: 7.8rem;
     height: 7.8rem;
     border-radius: 50%;
-    
+}
+
+.user__picture:hover {
+    cursor: pointer;
 }
 
 .user__username {
