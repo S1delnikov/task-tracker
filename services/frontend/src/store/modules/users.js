@@ -54,6 +54,24 @@ export default {
         }
     },
     actions: {
+        async register(ctx, form) {
+            try {
+                const res = await axios.post('/register', 
+                {
+                    "username": form.login,
+                    "searchname": Date.now().toString(),
+                    "password": form.password,
+                    "date_of_registration": Date.now()
+                }
+            )
+            const signIn = document.getElementById('signIn-btn')
+            signIn.click()
+            } catch(e) {
+                if (e.response.status == 400) {
+                    alert('Данный логин уже занят. Попробуйте другой')
+                }
+            }
+        },
         async login(ctx, form) {
             if (form.login != '' && form.password != ''){
                 try{

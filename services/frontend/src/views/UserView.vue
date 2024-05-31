@@ -31,23 +31,38 @@
             <button class="logout-btn" type="button" @click="logoutSubmit">Выйти</button>
         </div>
         <div v-else>
-            <form v-if="hasAccount" @submit.prevent="login(loginForm)" class="login-form">
-                <div class="login-form__header">
+            <form v-show="hasAccount==false" @submit.prevent="login(form)" class="form">
+                <div class="form__header">
                     <h2>Авторизация</h2>
                 </div>
-                <div class="login-form__fields">
+                <div class="form__fields">
                     <label for="uname">Имя пользователя</label>
-                    <input class="users-input" v-model="loginForm.login" type="text" name="uname" placeholder="Введите имя пользователя" required>
+                    <input class="users-input" v-model="form.login" type="text" name="uname" placeholder="Введите имя пользователя" required>
         
                     <label for="pswd">Пароль</label>
-                    <input class="users-input" v-model="loginForm.password" type="password" name="pswd" placeholder="Введите пароль" required>
+                    <input class="users-input" v-model="form.password" type="password" name="pswd" placeholder="Введите пароль" required>
 
-                    <button class="btn-submit" type="submit">Войти</button>
-                    <button @click="switchForm">Зарегистрироваться</button>
+                    <button class="btn-submit" id="signIn-btn" type="submit">Войти</button>
+                    <button class="btn-submit" @click="switchForm">Создать аккаунт</button>
                 </div>
             </form>
-            <form v-else>
-                <h2>Регистрация</h2>
+            <form v-show="hasAccount==true" @submit.prevent="tryRegister" class="form">
+                <div class="form-header">
+                    <h2>Регистрация</h2>
+                </div>
+                <div class="form__fields">
+                    <label for="uname">Логин</label>
+                    <input class="users-input" v-model="form.login" type="text" name="uname" placeholder="Придумайте имя пользователя" required>
+                    
+                    <label for="pswd">Пароль</label>
+                    <input class="users-input" v-model="form.password" type="password" name="pswd" placeholder="Придумайте пароль" required>
+
+                    <label for="pswdClone">Повторите пароль</label>
+                    <input class="users-input" v-model="passwordClone" type="password" name="pswdClone" placeholder="Повторите пароль" required>
+
+                    <button class="btn-submit" type="submit">Зарегистрироваться</button>
+                    <button class="btn-submit" @click="switchForm">Уже есть аккаунт</button>
+                </div>
             </form>
 
         </div>
@@ -61,10 +76,11 @@ export default {
     data() {
         return {
             hasAccount: true,
-            loginForm: {
+            form: {
                 login: '',
                 password: ''
-            }
+            },
+            passwordClone: '',
         }
     },
     computed: {
@@ -72,15 +88,18 @@ export default {
     },
     methods: {
         ...mapMutations(['logout']),
-        ...mapActions(['login', 'checkAuth', 'fetchCurrentUser', 'updateUserInfo', 'uploadProfilePic', 'deleteProfilePic']),
+        ...mapActions(['register', 'login', 'checkAuth', 'fetchCurrentUser', 'updateUserInfo', 'uploadProfilePic', 'deleteProfilePic']),
         openFilePicker() {
             let filePicker = document.getElementById('filePicker')
             filePicker.click()
         },
-        async loginSubmit() {
-            await this.login(this.loginForm)
-            // return localStorage.getItem('isAuthenticated')
+        async tryRegister() {
+            this.register(this.form)
         },
+        // async loginSubmit() {
+        //     await this.login(this.loginForm)
+        //     // return localStorage.getItem('isAuthenticated')
+        // },
         async logoutSubmit() {
             await this.logout()
             // await this.logout()
@@ -272,14 +291,14 @@ export default {
     background-color: #ff9393;
 }
 
-.login-form {
+.form {
     display: block;
     margin: 0 auto;
     /* align-items: center; */
     width: 50%;
 }
 
-.login-form__fields {
+.form__fields {
     display: flex;
     flex-direction: column;
     /* align-items: center; */
