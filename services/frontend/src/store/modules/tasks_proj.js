@@ -5,7 +5,7 @@ import { reactive } from 'vue'
 export default {
     state: () => ({
         tasksProj: [],
-        host: 'http://127.0.0.1:8000',
+        host: process.env.VUE_APP_FASTAPI_BACKEND_URL,
         id_project: '',
     }),
     getters: {

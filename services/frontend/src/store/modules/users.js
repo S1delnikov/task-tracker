@@ -13,7 +13,7 @@ export default {
         profilePic: '',
         currentUser: '',
         currentUserRights: '',
-        host: 'http://127.0.0.1:8000',
+        host: process.env.VUE_APP_FASTAPI_BACKEND_URL,
     },
     getters: {
         getAuth(state) {

@@ -386,6 +386,9 @@ export default {
     color: #8EE4AF;
 }
 
+.btn-submit:hover {
+    background-color: #318675;
+}
 
 label {
     font-size: 2rem;
@@ -407,5 +410,9 @@ input::placeholder {
     padding: 0;
     margin: 0;
 }
-/* } */
+
+@media  (max-width: 768px){
+    
+}
+
 </style>
