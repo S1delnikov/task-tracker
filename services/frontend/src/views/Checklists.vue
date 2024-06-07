@@ -1,7 +1,7 @@
 <template>
     <div class="checklists">
         <button v-if="getAuth" class="create-checklist" type="button" @click="createTask">Добавить чеклист</button>
-        <div v-if="getAuth" @mouseover="redraw" class="content" v-masonry="containerId" transition-duration="0.4s" item-selector=".item" stagger="0.03s">
+        <div v-if="getAuth" @mouseover="redraw" @touchmove="redraw" @playing="redraw" class="content" v-masonry="containerId" transition-duration="0.4s" item-selector=".item" stagger="0.03s">
             <Checklist v-masonry-tile class="item" v-for="task in getTasks" :key="task.id_task" v-bind:task="task" @test="handleEmit"></Checklist>
         </div>
         <div v-else>
@@ -50,6 +50,10 @@ h1 {
     font-size: 1.6rem;
 }
 
+.checklists {
+    overflow: hidden;
+}
+
 .create-checklist {
     font-size: 1.6rem;
     padding: 1.5rem;
@@ -78,5 +82,42 @@ h1 {
 .checklist {
     margin: auto 4rem;
     margin-bottom: 4rem;
+    /* overflow: hidden; */
+}
+
+@media (max-width: 1600px) {
+    .checklists {
+        margin-left: 8rem;
+    }
+
+    .checklist {
+        margin: 2rem;
+    }
+}
+
+@media (max-width: 1280px) {
+    .checklists {
+        margin-left: 6rem;
+    }
+
+    .checklist {
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .checklists {
+        margin: auto;
+    }
+
+    .checklist {
+        margin: 0.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .checklist {
+        margin: 1rem;
+    }
 }
 </style>

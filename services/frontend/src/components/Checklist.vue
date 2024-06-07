@@ -11,12 +11,12 @@
             <div class="checklist__main">
                 <div class="checklist__todo" v-for="subtask in task.subtasks" :key="subtask.id_subtask">
                     <label class="todo__checkbox">
-                        <input class="todo__real-checkbox" type="checkbox" v-model="subtask.done" @change="updateSubtask(subtask)">
+                        <input class="todo__real-checkbox" type="checkbox" v-model="subtask.done">
                         <span class="todo__custom-checkbox"></span>
                     </label>
-                    <input class="todo__text" type="text" v-model="subtask.description" @change="flashback">
+                    <input class="todo__text" type="text" v-model="subtask.description">
                     <!-- <p>{{ task }}</p> -->
-                    <button class="todo__update" type="button" @click="updateSubtask(subtask)"><img class="test" src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
+                    <button class="todo__update" type="button" @click="updateSubtask(subtask)"><img src="@/assets/icons/refresh-icon.webp" alt="Обновить"></button>
                     <button class="todo__delete" type="button" @click="deleteSubtask(subtask)"><img src="@/assets/icons/delete-icon_2.webp" alt="Удалить"></button>
                 </div>
             </div>
@@ -194,5 +194,181 @@ export default {
 
 .add-todo:hover {
     background-color: #51c47f;
+}
+
+@media (max-width: 1600px) {
+    .checklist {
+        width: 30rem;
+    }
+
+    .checklist__body {
+        margin: 1rem;
+    }
+
+    .title {
+        width: 95%;
+        font-size: 2rem;
+    }
+
+    .todo__custom-checkbox  {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .todo__custom-checkbox::before {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .todo__real-checkbox:checked + .todo__custom-checkbox::before {
+        transform: translate(-50%, -50%) scale(1.5);
+        background-color: #C0F9A5;
+    }
+
+    .todo__text {
+        font-size: 1.6rem;
+        padding: 0.4rem;
+    }
+
+    .todo__update img{
+        width: 2.8rem;
+    }
+
+    .todo__delete img{
+        width: 2.8rem;
+    } 
+}
+
+@media (max-width: 1280px) {
+    /* .checklist {
+        margin: 1rem;
+    } */
+
+    .checklist {
+        width: 45%;
+    }
+
+    .checklist__body {
+        margin: 1rem;
+    }
+
+    .title {
+        width: 95%;
+        font-size: 2rem;
+    }
+
+    .todo__custom-checkbox  {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .todo__custom-checkbox::before {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .todo__real-checkbox:checked + .todo__custom-checkbox::before {
+        transform: translate(-50%, -50%) scale(1.5);
+        background-color: #C0F9A5;
+    }
+
+    .todo__text {
+        font-size: 1.6rem;
+        padding: 0.4rem;
+    }
+
+    .todo__update img{
+        width: 2.8rem;
+    }
+
+    .todo__delete img{
+        width: 2.8rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .checklist {
+        width: 30rem;
+    }
+
+    .checklist__body {
+        margin: 1rem;
+    }
+
+    .title {
+        width: 95%;
+        font-size: 1.8rem;
+    }
+
+    .todo__custom-checkbox  {
+        width: 2.8rem;
+        height: 2.8rem;
+    }
+
+    .todo__custom-checkbox::before {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .todo__real-checkbox:checked + .todo__custom-checkbox::before {
+        transform: translate(-50%, -50%) scale(1.5);
+        background-color: #C0F9A5;
+    }
+
+    .todo__text {
+        font-size: 1.4rem;
+        padding: 0.4rem;
+    }
+
+    .todo__update img{
+        width: 2.2rem;
+    }
+
+    .todo__delete img{
+        width: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .checklist {
+        width: 30rem;
+    }
+
+    .checklist__body {
+        margin: 1rem;
+    }
+
+    .title {
+        width: 95%;
+        font-size: 1.8rem;
+    }
+
+    .todo__custom-checkbox  {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .todo__custom-checkbox::before {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .todo__real-checkbox:checked + .todo__custom-checkbox::before {
+        transform: translate(-50%, -50%) scale(1.5);
+        background-color: #C0F9A5;
+    }
+
+    .todo__text {
+        font-size: 1.4rem;
+        padding: 0.4rem;
+    }
+
+    .todo__update img{
+        width: 2.2rem;
+    }
+
+    .todo__delete img{
+        width: 2.2rem;
+    }
 }
 </style>

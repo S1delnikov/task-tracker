@@ -79,6 +79,11 @@ export default {
 </script>
 
 <style scoped>
+.documents {
+    /* background-color: #fff; */
+    overflow-x: scroll;
+}
+
 .documents__control {
     margin: 2rem;
 }
@@ -102,14 +107,18 @@ export default {
 .documents__control button {
     padding: 1rem;
     font-size: 1.8rem;
+    display: block;
+    margin-left: 7%;
+    width: 30rem;
 }
 
 .documents__board {
     background-color: #EDF5E1;
     border-radius: 2rem;
-    width: 65%;
+    width: 85%;
+    display: block;
     padding: 2rem 4rem;
-    margin-left: 12%;
+    margin: auto;
 }
 
 .documets__list {
@@ -135,6 +144,7 @@ export default {
     border: 0.1rem solid #8EE4AF;
     border-radius: 1rem;
     color: #8EE4AF;
+    text-overflow: ellipsis;
 }
 
 .document > input:focus {
@@ -265,5 +275,129 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@media (max-width: 1600px) {
+    .documents__control {
+        margin: 1rem auto;
+    }
+
+    .documents__control button {
+        display: block;
+        margin-left: 10%;
+        width: 30rem;
+    }
+
+    .documents__board {
+        display: block;
+        margin: auto;
+        padding: 0;
+        width: 85%;
+    }
+
+    .document {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .document > input {
+        width: 95%;
+        font-size: 1.8rem;
+        text-overflow: ellipsis;
+    }
+
+    .document > button, button > a {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .documents__control {
+        margin: 1rem auto;
+    }
+
+    .documents__control button {
+        display: block;
+        /* margin: auto; */
+        margin-left: 4%;
+        width: 30rem;
+    }
+
+    .documents__board {
+        display: block;
+        margin: auto;
+        padding: 0;
+        width: 95%;
+    }
+
+    .document {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .document > input {
+        width: 95%;
+        font-size: 1.6rem;
+        text-overflow: ellipsis;
+    }
+
+    .document > button, button > a {
+        font-size: 1.4rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    /* .dialog__content {
+        margin-left: 25rem;
+    } */
+
+    .limited {
+        max-width: 50rem
+    }
+}
+
+@media (max-width: 768px) {
+    .documents__control {
+        margin: 1rem auto;
+    }
+
+    .documents__control button {
+        display: block;
+        margin: auto;
+        width: 30rem;
+    }
+
+    .documents__board {
+        display: block;
+        margin: auto;
+        padding: 0;
+        width: 95%;
+    }
+
+    .document {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .document > input {
+        width: 95%;
+        font-size: 1.4rem;
+        text-overflow: ellipsis;
+    }
+
+    .document > button, button > a {
+        font-size: 1.2rem;
+    }
+
+    .dialog__table {
+        margin-left: 0;
+    }
+
+    .limited {
+        max-width: 10rem
+    }
 }
 </style>

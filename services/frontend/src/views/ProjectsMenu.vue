@@ -55,7 +55,7 @@ export default {
     color: #8EE4AF;
     border-radius: 4rem;
     margin: 1rem auto;
-    margin-left: 4rem;
+    margin-left: 8%;
 }
 
 .projects_create-btn button:hover {
@@ -65,5 +65,31 @@ export default {
 .projects__list {
     display: flex;
     flex-wrap: wrap;
+}
+
+@media (max-width:1600px) {
+    .projects_create-btn button {
+        margin-left: 9rem;
+    }
+}
+
+@media (max-width:1280px) {
+    .projects_create-btn button {
+        margin-left: 7rem;
+    }
+}
+
+@media (max-width:1024px) {
+    .projects_create-btn button {
+        margin-left: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects_create-btn button {
+        display: block;
+        margin: 1rem auto;
+        max-width: 32rem;
+    }
 }
 </style>

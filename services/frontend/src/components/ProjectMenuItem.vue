@@ -184,4 +184,32 @@ button > img{
     display: block;
     padding: auto;
 }
+
+@media (max-width: 1024px) {
+    .menu-item {
+        width: 45%;
+    }
+
+    .name {
+        font-size: 1.8rem;
+    }
+
+    .menu-item__description textarea {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-item {
+        width: 95%;
+    }
+
+    .name {
+        font-size: 1.6rem;
+    }
+
+    .menu-item__description textarea {
+        font-size: 1.2rem;
+    }
+}
 </style>

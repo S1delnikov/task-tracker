@@ -144,10 +144,12 @@ export default {
                 const currentUser = res.data
                 console.log(currentUser)
                 ctx.commit('setCurrentUser', currentUser)
+                ctx.commit('setAuth', true)
             } catch(e) {
                 if (e.response.status == 401) {
                     localStorage.setItem('isAuthenticated', false)
                     router.push('/')
+                    ctx.commit('setAuth', false)
                 }
             }
         },

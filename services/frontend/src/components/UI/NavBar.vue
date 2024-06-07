@@ -1,7 +1,5 @@
 <template>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <nav class="sidebar">
+    <nav id="sidebar" class="sidebar">
         <div class="user">
             <div class="user__picture" @click="$router.push('/')">
                 <img v-if="getCurrentUser" :src="getCurrentUser.picture" alt="Profile picture" class="user__picture">
@@ -31,11 +29,18 @@
             </div>
         </div>
     </nav>
+    <div class="toggleSidebarBtn">
+        <button id="toggleSidebarBtn" type="button" @click="openSidebar"><img style="transition: 2.5s;" :src="sidebarBtnImage" alt="Меню"></button>
+    </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 export default {
+    data: () => ({
+        opened: false,
+        sidebarBtnImage: require('@/assets/icons/open-sidebar-icon.svg')
+    }),
     name: 'NavBar',
     computed: {
         ...mapGetters(['getCurrentUser'])
@@ -48,6 +53,25 @@ export default {
             else 
                 element[0].style.display = 'block'
         },
+        openSidebar() {
+            let toggleSidebarBtnBlock = document.getElementsByClassName('toggleSidebarBtn')[0]
+            let toggleSidebarBtn = document.getElementById('toggleSidebarBtn')
+            let sidebar = document.getElementById('sidebar')
+
+            if (!this.opened) {
+                sidebar.style.width = '25rem'
+                this.opened = true
+                toggleSidebarBtn.firstChild.src = require('@/assets/icons/close-sidebar-icon.svg')
+                toggleSidebarBtnBlock.style.left = `21.8rem`
+                console.log(toggleSidebarBtnBlock.style.left)
+            }
+            else {
+                sidebar.style.width = '0rem'
+                this.opened = false
+                toggleSidebarBtn.firstChild.src = require('@/assets/icons/open-sidebar-icon.svg')
+                toggleSidebarBtnBlock.style.left = `0`
+            }
+        },
     }
 }
 </script>
@@ -57,12 +81,13 @@ export default {
   height: 100%;
   width: 22rem;
   position: fixed;
-  z-index: 1;
+  z-index: 9999;
   top: 0;
   left: 0;
   background-color: #05386B;
   overflow-x: hidden;
   padding-top: 16px;
+  transition: 0.5s;
 }
 
 /* Style sidebar links */
@@ -83,10 +108,10 @@ export default {
 }
 
 /* Add media queries for small screens (when the height of the screen is less than 450px, add a smaller padding and font-size) */
-@media screen and (max-height: 450px) {
+/* @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
-}
+} */
 
 .dropdown-btn {
     display: flex;
@@ -135,6 +160,7 @@ export default {
 }
 
 .user {
+    margin-left: 0.4rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -159,5 +185,51 @@ export default {
     color: #fff;
     display: block;
     margin: auto;
+}
+
+.toggleSidebarBtn {
+    display: none;
+}
+
+@media (max-width: 1280px) {
+    .sidebar {
+        width: 20rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 15rem;
+    }
+
+    .route-btn, .dropdown-btn, .sidebar a {
+        font-size: 1.4rem;
+    }
+}
+
+@media  (max-width: 768px){
+    .sidebar {
+        width: 0;
+    }
+
+    .toggleSidebarBtn {
+        display: block;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 9999;
+        transition: 0.5s;
+    }
+
+    #toggleSidebarBtn {
+        background-color: rgba(0, 0, 0, 0);
+        border: none;
+
+    }
+
+    #toggleSidebarBtn > img{
+    display: block;
+    padding: auto;
+    }
 }
 </style>

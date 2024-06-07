@@ -29,6 +29,11 @@
             </DialogView>
         </div>
         <div class="project__boards">
+            <div class="project__board-switcher">
+                <button type="button" @click="switchBoard('to-do')"><img id="switcher-to-do-icon" class="board-switcher__icon" src="@/assets/icons/project-tasks/to-do-active-section-icon.svg" alt=""></button>
+                <button type="button" @click="switchBoard('in-progress')"><img id="switcher-in-progress-icon" class="board-switcher__icon" src="@/assets/icons/project-tasks/in-progress-section-icon.svg" alt=""></button>
+                <button type="button" @click="switchBoard('done')"><img id="switcher-done-icon" class="board-switcher__icon" src="@/assets/icons/project-tasks/done-section-icon.svg" alt=""></button>
+            </div>
             <div id="project__todo-board" class="project__task-board">
                 <div class="title">Ожидают выполнения</div>
                 <div v-for="taskProj in getTasksProj" :key="taskProj.id_task">
@@ -215,6 +220,47 @@ export default {
             let list = document.getElementById(`subtasks-${id_task}`)
             list.classList.toggle('hidden')
         },
+        switchBoard(board) {
+            let toDoBoard = document.getElementById('project__todo-board')
+            let toDoIcon = document.getElementById('switcher-to-do-icon')
+
+            let inProgressBoard = document.getElementById('project__in-progress-board')
+            let inProgress = document.getElementById('switcher-in-progress-icon')
+
+            let doneBoard = document.getElementById('project__done-board')
+            let doneIcon = document.getElementById('switcher-done-icon')
+
+            if (board == 'to-do') {
+                toDoBoard.style.display = 'block'
+                toDoIcon.src  = require('@/assets/icons/project-tasks/to-do-active-section-icon.svg')
+
+                inProgressBoard.style.display = 'none'
+                inProgress.src = require('@/assets/icons/project-tasks/in-progress-section-icon.svg')
+
+                doneBoard.style.display = 'none'
+                doneIcon.src = require('@/assets/icons/project-tasks/done-section-icon.svg')
+            }
+            if (board == 'in-progress') {
+                toDoBoard.style.display = 'none'
+                toDoIcon.src  = require('@/assets/icons/project-tasks/to-do-section-icon.svg')
+
+                inProgressBoard.style.display = 'block'
+                inProgress.src = require('@/assets/icons/project-tasks/in-progress-active-section-icon.svg')
+
+                doneBoard.style.display = 'none'
+                doneIcon.src = require('@/assets/icons/project-tasks/done-section-icon.svg')
+            }
+            if (board == 'done') {
+                toDoBoard.style.display = 'none'
+                toDoIcon.src  = require('@/assets/icons/project-tasks/to-do-section-icon.svg')
+
+                inProgress.src = require('@/assets/icons/project-tasks/in-progress-section-icon.svg')
+                inProgressBoard.style.display = 'none'
+
+                doneBoard.style.display = 'block'
+                doneIcon.src = require('@/assets/icons/project-tasks/done-active-section-icon.svg')
+            }
+        },
     },
     created() {
         this.checkAuth()
@@ -331,6 +377,22 @@ export default {
     margin-top: 4rem;
     /* margin-bottom: 4rem; */
     margin-right: 4rem;
+}
+
+.project__board-switcher {
+    display: none;
+}
+
+.project__board-switcher button {
+    padding: 1rem;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.board-switcher__icon {
+    display: block;
+    padding: 0;
+    width: 6.4rem;
 }
 
 .title {
@@ -683,9 +745,141 @@ export default {
 }
 
 .limited {
-    max-width: 250px;
+    max-width: 100rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@media (max-width: 1600px) {
+    .limited {
+        max-width: 90rem;
+    }
+
+    .project__control {
+        margin-left: 8rem;
+    }
+
+    .project__boards {
+        display: flex;
+        margin-left: 9rem;
+    }
+}
+
+@media (max-width: 1280px) {
+    .project__control {
+        margin-left: 7rem;
+    }
+
+    .limited {
+        max-width: 15rem;
+    }
+
+    .project__boards {
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .project__board-switcher {
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem auto;
+        position: sticky;
+        top: 0.5rem;
+        z-index: 99;
+        width: 16rem;
+        width: fit-content;
+        border: none;
+    }
+
+    .project__task-board {
+        width: 70rem;
+        margin: auto;
+    }
+
+    #project__in-progress-board {
+        display: none;
+    }
+
+    #project__done-board {
+        display: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .project__boards {
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .project__board-switcher {
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem auto;
+        position: sticky;
+        top: 0.5rem;
+        z-index: 99;
+        width: 16rem;
+        width: fit-content;
+        border: none;
+    }
+
+    .project__task-board {
+        width: 50rem;
+        margin: auto;
+    }
+
+    #project__in-progress-board {
+        display: none;
+    }
+
+    #project__done-board {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .members__table {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+    }
+
+    .project__control {
+        margin-left: 0;
+    }
+
+    .project__boards {
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .project__board-switcher {
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem auto;
+        position: sticky;
+        top: 0.5rem;
+        z-index: 99;
+        width: 16rem;
+        width: fit-content;
+        border: none;
+    }
+
+    .project__task-board {
+        width: 95%;
+        margin: auto;
+    }
+
+    #project__in-progress-board {
+        display: none;
+    }
+
+    #project__done-board {
+        display: none;
+    }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div v-if="getAuth==true">
+        <div v-if="getAuth">
             <div class="profile">
                 <div class="profile__picture">
                     <img :src="getCurrentUser.picture" alt="">
@@ -165,10 +165,10 @@ export default {
         }
     },
     created() {
-        this.checkAuth()
+        // this.checkAuth()
+        this.fetchCurrentUser()
     },
     mounted() {
-        this.fetchCurrentUser()
     },
 }
 </script>
@@ -182,6 +182,7 @@ export default {
     margin: 2rem auto;
     background-color: #E6ECDC;
     border-radius: 2rem;
+    overflow-x: scroll;
 }
 
 .profile {
@@ -216,6 +217,7 @@ export default {
     background-color: #379683;
     color: #8EE4AF;
     border-radius: 2rem;
+    width: 12rem;
 }
 
 .picture__control button:hover {
@@ -344,9 +346,8 @@ export default {
 .form {
     display: block;
     margin: 0 auto;
-    /* align-items: center; */
     width: 50%;
-    padding: 2rew;
+    /* padding: 2rem; */
 }
 
 .form__header {
@@ -374,7 +375,8 @@ export default {
 }
 
 .btn-submit {
-    width: fit-content;
+    /* width: fit-content; */
+    width: 18.5rem;
     font-size: 1.6rem;
     margin-top: 3rem;
     margin-left: auto;
@@ -409,10 +411,86 @@ input::placeholder {
     overflow: hidden;
     padding: 0;
     margin: 0;
+    position: fixed;
+    z-index: -999;
+}
+
+@media (max-width: 1600px) {
+    .container {
+        width: 85rem;
+        margin-top: 0.5rem;
+    }
+
+    .profile__fields {
+        width: 37rem;
+    }
+}
+
+@media (max-width: 1280px) {
+    .container {
+        width: 70rem;
+    }
+
+    .profile__fields {
+        width: 30rem;
+    }
+
+    .profile__logout-btn {
+        width: 20rem;
+    }
+}
+
+@media  (max-width: 1024px) {
+    .container {
+        width: 60rem;
+    }
+
+    .form {
+        width: 95%;
+    }
+
+    .profile__fields {
+        width: 25rem;
+    }
 }
 
 @media  (max-width: 768px){
+    .container {
+        width: 30.4rem;
+    }
+    .form {
+        width: 95%;
+    }
     
-}
+    .profile {
+        padding: 1rem;
+    }
 
+    .profile__picture {
+        width: 90%;
+        margin: auto;
+    }
+
+    .picture__control > button{
+        width: 10rem;
+    }
+
+    .profile__fields {
+        width: 90%;
+        margin: auto;
+        margin-top: 2rem;
+    }
+
+    .profile__full-name {
+        margin-top: 1rem;
+    }
+
+    .profile__update-data {
+        margin-top: 0rem;
+    }
+
+    .profile__disabled {
+        margin-bottom: 0rem;
+    }
+}
 </style>

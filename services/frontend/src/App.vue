@@ -29,4 +29,28 @@ export default {
 .main {
   margin-left: 25rem; /* 22 */
 }
+
+@media (max-width: 1600px) {
+  .main {
+    margin-left: 15rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .main {
+    margin-left: 15rem;
+  }
+}
+
+@media  (max-width: 1024px) {
+  .main {
+    margin-left: 15rem;
+  }
+}
+
+@media  (max-width: 768px) {
+  .main {
+    margin-left: 0rem;
+  }
+}
 </style>
